@@ -1,0 +1,10 @@
+{
+  "description": "A premium Arabic-first law firm website offering sophisticated legal services, expert team profiles, legal resources, and seamless client consultation booking.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
