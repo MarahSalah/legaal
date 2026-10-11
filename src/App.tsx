@@ -323,7 +323,7 @@ function Home({ go }: { go: (to: string) => void }) {
           <div className="about-copy">
             <p>مرحبًا بكم في شركة بيت الترافع لأعمال المحاماة والتحكيم في عمّان، بإدارة المحامي عبدالله نواف الزبيدي، الحاصل على بكالوريوس القانون من جامعة اليرموك عام 2010 وماجستير القانون التجاري عام 2013، والمزاول للمهنة منذ عام 2014.</p>
             <p>نقدم خدمات قانونية للأفراد والشركات في مجالات الشركات والقضايا التجارية والجرائم الإلكترونية والعمل والإيجارات والتعويضات، مع الحرص على متابعة الإجراءات وإطلاع العميل على مستجدات ملفه.</p>
-            <Button to="/about" go={go} secondary>تعرف علينا</Button>
+            <div className="about-actions"><Button to="/about" go={go} secondary>تعرف علينا</Button><Button to="/lawyer-in-amman" go={go}>محامي في عمان</Button></div>
           </div>
         </div>
       </section>
@@ -1386,7 +1386,7 @@ function About({ go }: { go: (to: string) => void }) {
       </div></section>
       <section className="about-support"><div className="container">
         <div className="about-support-visual"><img src="/assets/hero-legal.jpg" alt="معالجة مهنية لملف قانوني" /></div>
-        <div><p className="eyebrow">منهجية مهنية</p><h2>تحديث المعرفة القانونية والتقنية.</h2><p>في شركة بيت الترافع لأعمال المحاماة والتحكيم نحرص على تحديث معرفتنا بأحدث التطورات القانونية والتقنية لضمان تقديم خدمة أفضل لعملائنا.</p></div>
+        <div><p className="eyebrow">منهجية مهنية</p><h2>تحديث المعرفة القانونية والتقنية.</h2><p>في شركة بيت الترافع لأعمال المحاماة والتحكيم نحرص على تحديث معرفتنا بأحدث التطورات القانونية والتقنية لضمان تقديم خدمة أفضل لعملائنا.</p><p><Link to="/trusted-lawyer-number" go={go} className="text-link">تعرّف على معلومات التواصل مع محامٍ أردني موثوق <Arrow /></Link></p></div>
       </div></section>
       <section className="about-practices"><div className="container">
         <SectionHeader eyebrow="تخصصات الفريق" title="فريق قانوني متعدد الخبرات." intro="لدينا فريق من المحامين المتخصصين في العديد من المجالات القضائية، ويعمل كل تخصص ضمن رؤية قانونية متكاملة." />
@@ -1615,7 +1615,7 @@ function Contact({ go }: { go: (to: string) => void }) {
         </div>
         <div className="location"><div className="map-frame"><span>LOCATION / AMMAN</span><iframe title="موقع شركة بيت الترافع في عمّان" src="https://www.google.com/maps?q=Jerusalem%20Commercial%20Complex%2C%20Khalda%2C%20Amman%2C%20Jordan&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe></div><p>عمّان، خلدا، شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102</p><a href="https://maps.app.goo.gl/DdQr9daSYcbFSg5M7?g_st=ac" target="_blank" rel="noreferrer">فتح الموقع <Arrow /></a></div>
       </div></section>
-      <section className="contact-final"><div className="container"><h2>جاهز لاتخاذ الخطوة الصحيحة؟</h2><Button to="/contact" go={go}>احجز استشارة</Button></div></section>
+      <section className="contact-final"><div className="container"><h2>جاهز لاتخاذ الخطوة الصحيحة؟</h2><Button to="/contact" go={go}>احجز استشارة</Button><p className="contact-related-links"><Link to="/jordanian-lawyer-number" go={go}>رقم محامي أردني</Link><span aria-hidden="true"> · </span><Link to="/jordanian-lawyers-numbers" go={go}>أرقام محامين أردنيين</Link></p></div></section>
     </>
   );
 }
@@ -1753,7 +1753,7 @@ function Admin({ go }: { go: (to: string) => void }) {
 }
 
 function Footer({ go }: { go: (to: string) => void }) {
-  return <footer><div className="container footer-grid"><div className="footer-brand"><img src="/assets/logo-dark.png" alt="بيت الترافع لأعمال المحاماة والتحكيم" /><p>شركة بيت الترافع لأعمال المحاماة والتحكيم</p><span className="footer-location"><Icon name="pin" size={17} />عمّان، خلدا، شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102</span></div><div><strong>روابط</strong>{nav.slice(0, 5).map(([to, label]) => <Link key={to} to={to} go={go}>{label}</Link>)}</div><div><strong>تواصل</strong><a className="footer-phone" dir="ltr" href="tel:+962798080228"><Icon name="phone" size={16} />+962 79 808 0228</a><a className="footer-phone" dir="ltr" href="tel:+962782343333"><Icon name="phone" size={16} />+962 78 234 3333</a><a dir="ltr" href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a><Button to="/contact" go={go}>احجز استشارة</Button></div></div><div className="footer-bottom container"><span>© {new Date().getFullYear()} بيت الترافع</span><Link to="/login" go={go}>دخول الإدارة</Link><span>AMMAN / JORDAN</span></div></footer>;
+  return <footer><div className="container footer-grid"><div className="footer-brand"><img src="/assets/logo-dark.png" alt="بيت الترافع لأعمال المحاماة والتحكيم" /><p>شركة بيت الترافع لأعمال المحاماة والتحكيم</p><span className="footer-location"><Icon name="pin" size={17} />عمّان، خلدا، شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102</span></div><div><strong>روابط</strong>{nav.slice(0, 5).map(([to, label]) => <Link key={to} to={to} go={go}>{label}</Link>)}<strong className="footer-subheading">الدليل القانوني</strong><Link to="/jordanian-lawyers-numbers" go={go}>أرقام محامين أردنيين</Link><Link to="/jordanian-lawyer-number" go={go}>رقم محامي أردني</Link><Link to="/trusted-lawyer-number" go={go}>رقم محامي أردني موثوق</Link></div><div><strong>تواصل</strong><a className="footer-phone" dir="ltr" href="tel:+962798080228"><Icon name="phone" size={16} />+962 79 808 0228</a><a className="footer-phone" dir="ltr" href="tel:+962782343333"><Icon name="phone" size={16} />+962 78 234 3333</a><a dir="ltr" href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a><Button to="/contact" go={go}>احجز استشارة</Button></div></div><div className="footer-bottom container"><span>© {new Date().getFullYear()} بيت الترافع</span><Link to="/login" go={go}>دخول الإدارة</Link><span>AMMAN / JORDAN</span></div></footer>;
 }
 
 function WhatsAppFloat() {
