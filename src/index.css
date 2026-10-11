@@ -1395,3 +1395,81 @@ body { background: #f8f5ee; }
   .nav-shell .brand { grid-area: brand; justify-self: start; }
   .nav-shell .menu-button { grid-area: menu; justify-self: end; }
 }
+
+/* Final typography and reading rhythm for legal detail pages */
+.detail-page h1 {
+  font-size: clamp(25px, 2.7vw, 34px);
+  line-height: 1.55;
+  margin: 0 0 8px;
+  max-width: 820px;
+}
+
+.detail-page .section-header h2,
+.detail-page h2 {
+  font-size: clamp(21px, 2.1vw, 28px);
+  line-height: 1.65;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.detail-page .detail-rule {
+  margin: 30px 0 34px;
+}
+
+.detail-page .lead {
+  max-width: 800px;
+  margin: 0 0 24px;
+  font-size: 15px;
+  line-height: 2.05;
+}
+
+.detail-page .lead + .lead {
+  margin-top: 0;
+}
+
+.detail-page .section-header {
+  margin-bottom: 24px;
+}
+
+.detail-page .section-header + .lead,
+.detail-page h2 + .lead,
+.detail-page h3 + .lead {
+  margin-top: 18px;
+}
+
+.detail-page h3 {
+  margin: 38px 0 16px;
+  font-size: clamp(18px, 1.8vw, 22px);
+  line-height: 1.7;
+}
+
+@media (max-width: 560px) {
+  .detail-page h1 {
+    font-size: clamp(24px, 5.5vw, 29px);
+    line-height: 1.6;
+  }
+
+  .detail-page .section-header h2,
+  .detail-page h2 {
+    font-size: 21px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .detail-page .detail-rule {
+    margin: 24px 0 28px;
+  }
+
+  .detail-page .lead {
+    font-size: 14px;
+    line-height: 2;
+    margin-bottom: 22px;
+  }
+
+  .detail-page h3 {
+    font-size: 18px;
+    margin-top: 32px;
+    margin-bottom: 14px;
+  }
+}
+
