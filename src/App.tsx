@@ -1436,13 +1436,13 @@ function LawyerProfile({ person, go }: { person: string; go: (to: string) => voi
     : { index: "02", name: "المحامية ليلى خالد أبو الرُب", role: "شريكة ومحامية", exp: "تمارس المهنة منذ عام 2015", areas: ["بكالوريوس القانون من جامعة اليرموك", "قوائم الشرف للعامين الدراسيين 2010/2011 و2011/2012", "القضايا العمالية: الأجور والفصل التعسفي ونهاية الخدمة والإجازات وعقود العمل", "التنفيذ والمطالبات المالية ومتابعة اللوائح والطلبات والجلسات والإجراءات الإلكترونية", "المعاملات أمام الوزارات والجهات الحكومية والتنسيق في القضايا متعددة التخصصات"], phone: "+962 78 234 3333", letter: "ل" };
   return (
     <>
-      <section className="profile-head"><div className="container">
+      <section className={`profile-head profile-head--${abdullah ? "abdullah" : "layla"}`}><div className="container">
         <Breadcrumb items={[["الرئيسية", "/"], ["من نحن", "/about"], [data.name, ""]]} go={go} />
         <div className="profile-grid"><div><h1>{data.name}</h1><p className="profile-role">{data.role}</p>
           <div className="profile-stats"><div><span>الخبرة</span><strong>{data.exp}</strong></div><div><span>الدور</span><strong>{data.role}</strong></div><div><span>رقم التلفون</span><strong dir="ltr">{data.phone}</strong></div><div><span>واتس</span><a className="profile-whatsapp" href={`https://wa.me/${data.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={15} />فتح واتساب</a></div></div>
         </div><div className={`profile-portrait ${abdullah ? "has-photo" : ""}`}>{abdullah ? <img src="/assets/abdullah.jpg" alt="المحامي عبدالله الزبيدي" /> : <span>{data.letter}</span>}</div></div>
       </div></section>
-      <section className="expertise"><div className="container narrow"><SectionHeader title="مجالات العمل" intro="خبرات عملية متخصصة تُدار ضمن منهج قانوني واضح." /><ol className="expertise-list">{data.areas.map((area, index) => <li key={area}><span>{String(index + 1).padStart(2, "0")}</span><h3>{area}</h3></li>)}</ol></div></section>
+      <section className={`expertise profile-expertise profile-expertise--${abdullah ? "abdullah" : "layla"}`}><div className="container narrow"><SectionHeader eyebrow={abdullah ? "التخصص القانوني" : "المؤهلات والمسيرة"} title={abdullah ? "مجالات العمل" : "المؤهلات والخبرة العملية"} intro={abdullah ? "مجالات قانونية يعمل عليها المحامي ضمن منهج واضح ومتابعة دقيقة." : "المؤهلات الأكاديمية والخبرة العملية، مرتبة في أقسام واضحة وسهلة القراءة."} /><ol className="expertise-list">{data.areas.map((area, index) => <li className={`profile-area-card ${!abdullah && index < 2 ? "profile-area-card--education" : "profile-area-card--practice"}`} data-profile-index={index + 1} key={area}><span>{String(index + 1).padStart(2, "0")}</span><div className="profile-area-copy">{!abdullah && <small className="profile-area-category">{index === 0 ? "المؤهل الأكاديمي" : index === 1 ? "التميز الأكاديمي" : "مجال الخبرة"}</small>}<h3>{area}</h3></div></li>)}</ol></div></section>
       <Consultation go={go} />
     </>
   );
