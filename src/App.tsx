@@ -14,6 +14,7 @@ const homeServices = [
   ["قضايا التأمين", "نقدم المساعدة في مطالبات التأمين والتعويض عن الأضرار الناتجة عن حوادث السير، بحسب وقائع كل حالة ومستنداتها."],
   ["العقارات والأجور", "نتابع نزاعات عقود الإيجار السكنية والتجارية، والمطالبة بالأجور المستحقة وإجراءات الإخلاء واسترداد المأجور، مع مراجعة الإنذارات العدلية والعقود وفق قانون المالكين والمستأجرين رقم 11 لسنة 1994 وتعديلاته. وفي حالات التخلف عن دفع الأجرة، تُراعى مهلة الخمسة عشر يوماً من تاريخ التبليغ بإنذار عدلي وفقاً للشروط القانونية المنطبقة على الحالة."],
   ["قضايا الشركات", "نساند الشركات في التأسيس والتسجيل واختيار الشكل القانوني، وإعداد ومراجعة عقود التأسيس والأنظمة الداخلية واتفاقيات الشركاء والتوريد والوكالات التجارية والاستثمار والتمويل والسرية، ومتابعة تعديلات الشركاء ورأس المال، وتقديم الاستشارات والتمثيل القانوني أمام الجهات المختصة والمحاكم والتحكيم."],
+  ["الإعسار وإعادة هيكلة الديون", "نرافق الشركات والمنشآت التي تواجه تعثراً مالياً، ونتابع حلول إعادة الهيكلة وجدولة الديون وفقاً لقانون الإعسار الأردني."],
 ];
 
 const services: Service[] = [
@@ -267,27 +268,36 @@ function Hero({ go }: { go: (to: string) => void }) {
 }
 
 function PracticeIndex({ item, index, go }: { item: string[]; index: number; go: (to: string) => void }) {
-  const icons: IconName[] = ["shield", "work", "wallet", "document", "home", "building"];
+  const icons: IconName[] = ["shield", "work", "wallet", "document", "home", "building", "wallet"];
+  const servicePath: Record<string, string> = {
+    "قضايا الجرائم الإلكترونية": "/cyber-crime-lawyer-jordan",
+    "القضايا العمالية": "/labor-lawyers-amman",
+    "المطالبات المالية والديون": "/compensation-cases-jordan",
+    "قضايا التأمين": "/insurance-lawyer-jordan",
+    "العقارات والأجور": "/rent-disputes-jordan",
+    "قضايا الشركات": "/company-lawyer-jordan",
+    "الإعسار وإعادة هيكلة الديون": "/services/insolvency",
+  };
   return (
     <article className="practice-row">
       <div className="practice-card-top"><span className="practice-no">{String(index + 1).padStart(2, "0")}</span><Icon name={icons[index]} /></div>
       <div><h3>{item[0]}</h3><p>{item[1]}</p></div>
-      <Link to="/services" go={go} ariaLabel={`اكتشف المزيد عن ${item[0]}`}><Arrow /></Link>
+      <Link to={servicePath[item[0]] || "/services"} go={go} ariaLabel={`اكتشف المزيد عن ${item[0]}`}><Arrow /></Link>
     </article>
   );
 }
 
 function TeamCard({ person, index, go }: { person: "abdullah" | "layla"; index: number; go: (to: string) => void }) {
   const info = person === "abdullah"
-    ? { name: "المحامي عبدالله نواف الزبيدي", role: "شريك ومدير الشركة", exp: "مزاول للمهنة منذ عام 2014", letter: "ع" }
-    : { name: "المحامية ليلى خالد أبو الرُب", role: "شريكة ومحامية", exp: "أكثر من 10 سنوات من الخبرة", letter: "ل" };
+    ? { name: "المحامي عبدالله نواف الزبيدي", role: "شريك ومدير الشركة", exp: "مزاول للمهنة منذ عام 2014", letter: "ع", profile: "/lawyer-in-jordan" }
+    : { name: "المحامية ليلى خالد أبو الرُب", role: "شريكة ومحامية", exp: "أكثر من 10 سنوات من الخبرة", letter: "ل", profile: "/lawyer-leila-khaled" };
   return (
     <article className="team-card">
       <div className="team-visual">
         {person === "abdullah" ? <img src="/assets/abdullah.jpg" alt="المحامي عبدالله الزبيدي" /> : <span className="portrait-letter">{info.letter}</span>}
       </div>
       <div className="team-info"><h3>{info.name}</h3><p>{info.role}</p><span>{info.exp}</span>
-        <Link to={`/team/${person}`} go={go}>عرض الملف الكامل <Arrow /></Link>
+        <Link to={info.profile} go={go}>عرض الملف الكامل <Arrow /></Link>
       </div>
     </article>
   );
@@ -457,7 +467,7 @@ function CyberCrimeLawyerJordan({ go }: { go: (to: string) => void }) {
           <p className="lead">إذا كنت ضحية لعملية ابتزاز، أو تواجه تهمة رقمية معقدة، أو ترغب في تحصين منشأتك تجارياً وسيبرانياً، فإن فريق بيت الترافع لأعمال المحاماة والتحكيم مستعد لتقديم الحل القانوني الحاسم.</p>
           <p className="lead">📞 الهاتف: <a href="tel:+962798080228" dir="ltr">962798080228+</a></p>
           <p className="lead"><a href="tel:+962782343333" dir="ltr">962782343333+</a></p>
-          <p className="lead">📱 واتساب: whatsapp</p>
+          <p className="lead">📱 واتساب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a></p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead">📍 الموقع: عمان – خلدا - شارع الأميرة رحمة بنت الحسن - مجمع القدس التجاري مدخل أ - الطابق 1 - مكتب 102.</p>
           <p className="lead">لا تترك أثرك الرقمي دون حماية؛ احجز استشارتك التخصصية اليوم.</p>
@@ -793,7 +803,7 @@ function JordanianLawyersNumbers({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر: <a href="tel:+962798080228" dir="ltr">962798080228+</a></p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</p>
-          <p className="lead">واتس آب:</p>
+          <p className="lead">واتس آب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1372,7 +1382,7 @@ function LawyerInAmman({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر:  962798080228+</p>
           <p className="lead">📧 البريد الإلكتروني: lawyerabdullah960@gmail.com</p>
           <p className="lead">📍 العنوان: عمان - خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102.</p>
-          <p className="lead">whatsApp:</p>
+          <p className="lead">واتساب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1411,7 +1421,7 @@ function About({ go }: { go: (to: string) => void }) {
 function Services({ go }: { go: (to: string) => void }) {
   return (
     <>
-      <PageHero title="خدماتنا" intro="خمس ممارسات قانونية واضحة، تتعامل مع احتياجك دون تعقيد." visual="services" />
+      <PageHero title="خدماتنا" intro="خدمات قانونية للأفراد والشركات، من الاستشارة والوقاية إلى متابعة النزاعات والإجراءات." visual="services" />
       <section className="services-list"><div className="container">
         {services.map((service, index) => <article key={service.slug}><div className="service-card-index"><span className="list-no">{String(index + 1).padStart(2, "0")}</span><Icon name={(["building", "work", "wallet", "shield", "document"] as IconName[])[index]} /></div><div><h2>{service.title}</h2><p>{service.description}</p></div><Link className="service-button" to={`/services/${service.slug}`} go={go}>اقرأ المزيد <Arrow /></Link></article>)}
       </div></section>
