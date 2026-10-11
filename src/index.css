@@ -606,7 +606,7 @@ body { background: #f8f5ee; }
 .services-list article:hover { padding-inline: 30px; transform: translateY(-6px); border-color: var(--olive-2); background: #faf6ee; box-shadow: 0 20px 40px rgba(38,53,47,.075); }
 .services-list article:hover::before { width: 100%; }
 .services-list article:nth-child(2), .services-list article:nth-child(5) { background: #f0ebe2; }
-.services-list article:nth-child(5) { grid-column: 1 / -1; min-height: 300px; order: 1; }
+.services-list article:nth-child(5) { grid-column: 1 / -1; min-height: 300px; }
 .service-card-index { display: flex; justify-content: space-between; align-items: center; color: var(--gold); margin-bottom: 45px; }
 .service-card-index .list-no { padding: 0; }
 .service-card-index .icon { color: var(--olive-2); width: 29px; height: 29px; }
