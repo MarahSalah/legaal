@@ -1959,93 +1959,6 @@ body { background: #f8f5ee; }
 }
 
 
-/* Readability and service-card layout refinement */
-.services-list .container {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.services-list .service-list-card {
-  display: grid;
-  grid-template-columns: 88px minmax(0, 1fr) 160px;
-  align-items: center;
-  gap: clamp(20px, 3vw, 38px);
-  min-height: 0;
-  padding: 38px 0;
-  visibility: visible;
-  opacity: 1;
-}
-
-.services-list .service-list-card .service-card-index {
-  display: flex;
-  align-self: start;
-  align-items: center;
-  flex-direction: column;
-  gap: 18px;
-  padding-top: 8px;
-}
-
-.services-list .service-list-card .list-no {
-  display: block;
-  padding: 0;
-  font-size: 13px;
-  line-height: 1.5;
-  font-variant-numeric: tabular-nums;
-}
-
-.services-list .service-list-card > div:nth-child(2) {
-  min-width: 0;
-}
-
-.services-list .service-list-card h2 {
-  margin: 0 0 22px;
-  line-height: 1.75;
-}
-
-.services-list .service-list-card p {
-  line-height: 2.25;
-  max-width: 760px;
-}
-
-.services-list .service-list-card > .service-button {
-  align-self: center;
-  margin-top: 0;
-}
-
-@media (max-width: 760px) {
-  .services-list .service-list-card {
-    grid-template-columns: 48px minmax(0, 1fr);
-    gap: 16px;
-    padding: 30px 0;
-  }
-
-  .services-list .service-list-card .service-card-index {
-    gap: 12px;
-  }
-
-  .services-list .service-list-card .service-card-index .icon {
-    width: 23px;
-    height: 23px;
-  }
-
-  .services-list .service-list-card h2 {
-    margin-bottom: 14px;
-    font-size: clamp(19px, 4.5vw, 23px);
-    line-height: 1.75;
-  }
-
-  .services-list .service-list-card p {
-    line-height: 2.15;
-  }
-
-  .services-list .service-list-card > .service-button {
-    grid-column: 2;
-    margin-top: 8px;
-    align-self: start;
-  }
-}
-
 /* More comfortable spacing across added legal and imported content pages */
 .detail-page .container.narrow > .lead {
   line-height: 2.2;
@@ -2107,16 +2020,6 @@ body { background: #f8f5ee; }
 }
 
 @media (max-width: 560px) {
-  .services-list .service-list-card {
-    grid-template-columns: 34px minmax(0, 1fr);
-    gap: 12px;
-    padding: 26px 0;
-  }
-
-  .services-list .service-list-card .service-card-index {
-    gap: 10px;
-  }
-
   .detail-page .container.narrow > .lead,
   .detail-page .imported-content p {
     line-height: 2.15;
