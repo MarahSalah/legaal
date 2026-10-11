@@ -2150,3 +2150,110 @@ body { background: #f8f5ee; }
     margin-bottom: 18px;
   }
 }
+
+
+/* Make the lawyer profile information and expertise items read as clear cards */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 16px;
+}
+
+.profile-stats > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid rgba(38, 53, 47, .16);
+  background: rgba(251, 248, 240, .9);
+  box-shadow: 0 8px 22px rgba(38, 53, 47, .035);
+  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+}
+
+.profile-stats > div:hover {
+  transform: translateY(-3px);
+  border-color: rgba(168, 137, 93, .65);
+  box-shadow: 0 14px 28px rgba(38, 53, 47, .07);
+}
+
+.expertise .expertise-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 18px;
+  border: 0;
+}
+
+.expertise .expertise-list > li {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+  min-height: 150px;
+  padding: 28px 24px;
+  border: 1px solid rgba(38, 53, 47, .16);
+  background: rgba(251, 248, 240, .88);
+  box-shadow: 0 8px 24px rgba(38, 53, 47, .035);
+  transition: transform .3s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease;
+}
+
+.expertise .expertise-list > li:hover {
+  padding: 28px 24px;
+  transform: translateY(-4px);
+  border-color: rgba(168, 137, 93, .7);
+  background: #fbf8f0;
+  box-shadow: 0 16px 34px rgba(38, 53, 47, .075);
+}
+
+.expertise .expertise-list > li > span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(168, 137, 93, .5);
+  background: rgba(168, 137, 93, .1);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.expertise .expertise-list > li > h3 {
+  margin: 0;
+  padding: 2px 0 0;
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 800px) {
+  .profile-stats { gap: 12px; }
+  .expertise .expertise-list { gap: 12px; }
+  .expertise .expertise-list > li {
+    grid-template-columns: 38px minmax(0, 1fr);
+    min-height: 132px;
+    padding: 22px 18px;
+    gap: 14px;
+  }
+  .expertise .expertise-list > li:hover { padding: 22px 18px; }
+}
+
+@media (max-width: 560px) {
+  .profile-stats { grid-template-columns: 1fr; }
+  .expertise .expertise-list { grid-template-columns: 1fr; gap: 12px; }
+  .expertise .expertise-list > li {
+    min-height: 0;
+    padding: 22px 18px;
+  }
+  .expertise .expertise-list > li:hover { padding: 22px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-stats > div,
+  .expertise .expertise-list > li {
+    transition: none;
+  }
+  .profile-stats > div:hover,
+  .expertise .expertise-list > li:hover {
+    transform: none;
+  }
+}
