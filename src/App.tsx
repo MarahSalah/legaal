@@ -387,6 +387,49 @@ function LawyerInJordan({ go }: { go: (to: string) => void }) {
 
 
 
+
+function TrustedJordanianLawyerNumber({ go }: { go: (to: string) => void }) {
+  return (
+    <>
+      <section className="detail-page">
+        <div className="container narrow">
+          <Breadcrumb items={[["الرئيسية", "/"], ["رقم محامي أردني موثوق", ""]]} go={go} />
+          <h1>رقم محامي أردني موثوق</h1>
+          <div className="detail-rule"></div>
+          <SectionHeader title="مقدمة" />
+          <p className="lead">يبحث الأفراد والتجار والمستثمرون دائماً عن <a href="https://sharekatmohamah.com/%d8%a3%d8%b1%d9%82%d8%a7%d9%85-%d9%85%d8%ad%d8%a7%d9%85%d9%8a%d9%86-%d8%a3%d8%b1%d8%af%d9%86%d9%8a%d9%8a%d9%86-%d8%af%d9%84%d9%8a%d9%84-%d8%a7%d9%84%d8%aa%d9%88%d8%a7%d8%b5%d9%84-%d8%a7%d9%84%d9%82/">رقم محامي أردني</a> موثوق يجمع بين التمكن التشريعي، السرية الصارمة، والأمانة المطلقة في دراسة القضايا وتوضيح الفرص والمخاطر بشفافية تامة. إن الثقة بين العميل ومحاميه هي الأساس الذي تُبنى عليه صيانة الحقوق وتحقيق أفضل النتائج القضائية.</p>
+          <p className="lead">تتميز شركة بيت الترافع لأعمال المحاماة والتحكيم برئاسة <a href="https://sharekatmohamah.com/%d9%85%d8%ad%d8%a7%d9%85%d9%8a-%d9%81%d9%8a-%d8%a7%d9%84%d8%a3%d8%b1%d8%af%d9%86-%d8%a7%d9%84%d9%85%d8%ad%d8%a7%d9%85%d9%8a-%d8%b9%d8%a8%d8%af-%d8%a7%d9%84%d9%84%d9%87-%d8%a7%d9%84d/">المحامي عبد الله نواف الزبيدي</a> و<a href="https://mohamyeh.com/">المحامية ليلى خالد أبو الرُب</a>، بالسيرة المهنية الناصعة والسجل الحافل بالإنجازات القضائية والاستشارية التي جعلت منها مقصداً ملهماً للباحثين عن خدمات قانونية عالية الجودة في الأردن.</p>
+
+          <SectionHeader title="المؤهلات التي تجعل من المحامي عبد الله الزبيدي والمحامية ليلى خالد أبو الرُب، خيارك الموثوق:" />
+          <ol>
+            <li>1.تأصيل أكاديمي متخصص: حاصل على درجة البكالوريوس في القانون من جامعة اليرموك (عام 2010)، متبوعة بدرجة الماجستير المتخصصة في "القانون التجاري" من ذات الجامعة (عام 2013).</li>
+            <li>2. خبرة ممتدة وسجل نجاحات (13+ عاماً): يُباشر المهنة رسمياً منذ حلف اليمين القانونية عام 2014، وتولى خلال مسيرته الترافع في قضايا نوعية ومعقدة للأفراد والشركات وحقق فيها أحكاماً حاسمة.</li>
+            <li>3. خبرة عملية في تأسيس وحماية الأعمال: نجح في تأسيس عشرات الشركات بمختلف أشكالها وتوثيق علاماتها التجارية لدى دائرة مراقبة الشركات والجهات الرسمية.</li>
+            <li>4. سرية مطلقة وأمانة مهنية: الالتزام الكامل بأعلى المعايير الأخلاقية لحماية بيانات ومصالح الموكلين التجارية والشخصية.</li>
+            <li>5. التواصل المستمر والتحديث الفوري: إبقاء العميل على اطلاع دائم ومباشر بكافة جلسات المحكمة والإجراءات أولاً بأول، دون أي غموض أو تأخير.</li>
+          </ol>
+
+          <SectionHeader title="كيف نضمن لك الحماية القانونية عند التواصل معنا؟" />
+          <ol>
+            <li>1.التحليل الوقائي الصريح: نوضح لك موقفك القانوني بكل صراحة وشفافية، مع تحديد الموقف القضائي المتوقع ودون تقديم وعود غير واقعية.</li>
+            <li>2. الصياغة المحكمة للعقود واللوائح: نعتمد بناء الاستراتيجيات الدفاعية والعقود على نصوص القانون وقرارات محكمة التمييز الأردنية لضمان عدم وجود ثغرات.</li>
+            <li>3. التحرك القضائي السريع: اتخاذ الإجراءات التحفظية والمستعجلة فور توكلينا لحماية الأموال والأصول والوثائق من الضياع أو التهريب.</li>
+          </ol>
+
+          <SectionHeader title="احصل على رقم محامي أردني موثوق الآن:" />
+          <p className="lead">لا تتردد في طلب الاستشارة القانونية من جهة موثوقة تضع مصلحتك وحقوقك في مقدمة أولوياتها. تواصل مباشرة مع <a href="https://sharekatmohamah.com/%d8%b4%d8%b1%d9%83%d8%a9-%d8%a8%d9%8a%d8%aa-%d8%a7%d9%84%d8%aa%d8%b1%d8%a7%d9%81%d8%b9-%d9%84%d9%84%d9%85%d8%ad%d8%a7%d9%85%d8%a7%d8%a9-%d9%88%d8%a7%d9%84%d8%aa%d8%ad%d9%83%d9%8a%d9%85/">المحامي عبد الله الزبيدي</a> و<a href="https://sharekatmohamah.com/%d8%a7%d9%84%d9%85%d8%ad%d8%a7%d9%85%d9%8a%d8%a9-%d9%84%d9%8a%d9%84%d9%89-%d8%ae%d8%a7%d9%84%d8%af%d9%85%d8%ad%d8%a7%d9%85%d9%8a%d8%a9-%d9%81%d9%8a-%d8%a7%d9%84%d8%a3%d8%b1%d8%af%d9%86-%d8%b9%d9%85/">المحامية ليلى خالد أبو الرُب</a>:</p>
+          <p className="lead">📞 الهاتف المباشر: 962798080228+</p>
+          <p className="lead">962782343333+</p>
+          <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
+          <p className="lead"><a href="https://maps.app.goo.gl/5BJtcnnpKYoED7WTA?g_st=ac">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102)</a>.</p>
+          <p className="lead"><strong>واتس آب:</strong></p>
+        </div>
+      </section>
+      <Consultation go={go} />
+    </>
+  );
+}
+
 function LeilaKhaledProfile({ go }: { go: (to: string) => void }) {
   return (
     <>
@@ -1055,6 +1098,7 @@ export default function App() {
   else if (path === "/rent-disputes-jordan") page = <RentDisputesJordan go={go} />;
   else if (path === "/compensation-cases-jordan") page = <CompensationCasesJordan go={go} />;
   else if (path === "/lawyer-leila-khaled") page = <LeilaKhaledProfile go={go} />;
+  else if (path === "/trusted-lawyer-number") page = <TrustedJordanianLawyerNumber go={go} />;
   else if (path === "/about") page = <About go={go} />;
   else if (path === "/services") page = <Services go={go} />;
   else if (path.startsWith("/services/")) page = <ServiceDetail slug={path.split("/")[2]} go={go} />;
