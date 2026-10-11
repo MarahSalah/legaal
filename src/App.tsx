@@ -1426,15 +1426,6 @@ function Services({ go }: { go: (to: string) => void }) {
       <PageHero title="خدماتنا" intro="خدمات قانونية للأفراد والشركات، من الاستشارة والوقاية إلى متابعة النزاعات والإجراءات." visual="services" />
       <section className="services-list"><div className="container">
         {services.map((service, index) => <article key={service.slug}><div className="service-card-index"><span className="list-no">{String(index + 1).padStart(2, "0")}</span><Icon name={(["building", "work", "wallet", "shield", "document"] as IconName[])[index % 5]} /></div><div><h2>{service.title}</h2><p>{service.description}</p></div><Link className="service-button" to={service.slug === "companies" ? "/company-lawyer-jordan" : service.slug === "labor" ? "/labor-lawyers-amman" : service.slug === "cybercrime" ? "/cyber-crime-lawyer-jordan" : service.slug === "rent-disputes" ? "/rent-disputes-jordan" : service.slug === "compensation" ? "/compensation-cases-jordan" : service.slug === "insurance" ? "/insurance-lawyer-jordan" : `/services/${service.slug}`} go={go}>عرض المزيد <Arrow /></Link></article>)}
-        {[
-          { title: "محامي في الأردن", path: "/lawyer-in-jordan", description: "السيرة المهنية للمحامي عبد الله الزبيدي وخدماته القانونية." },
-          { title: "محامي في عمّان", path: "/lawyer-in-amman", description: "الخدمات القانونية للأفراد والشركات من مقر بيت الترافع في خلدا." },
-          { title: "محامي قضايا جزائية في الأردن", path: "/criminal-lawyer-jordan", description: "التعريف بخدمات التمثيل والدفاع في القضايا الجزائية." },
-          { title: "محامي جرائم إلكترونية في الأردن", path: "/cyber-crime-lawyer-jordan", description: "خدمات قانونية متعلقة بالجرائم الإلكترونية والأدلة الرقمية." },
-          { title: "محامي إخلاء مأجور ونزاعات الإيجار", path: "/rent-disputes-jordan", description: "متابعة نزاعات الإيجار والأجور والإخلاء واسترداد المأجور." },
-          { title: "المحامي عبد الله الزبيدي", path: "/abdullah-al-zubaidi-commercial-law", description: "الملف المهني والخدمات التجارية للمحامي عبد الله الزبيدي." },
-          { title: "المحامية ليلى خالد أبو الرُب", path: "/lawyer-leila-khaled", description: "الملف المهني للمحامية ليلى وخبرتها في العمل والتنفيذ والمطالبات المالية." },
-        ].map((item, index) => <article key={item.path}><div className="service-card-index"><span className="list-no">{String(index + services.length + 1).padStart(2, "0")}</span><Icon name="document" /></div><div><h2>{item.title}</h2><p>{item.description}</p></div><Link className="service-button" to={item.path} go={go}>عرض الصفحة <Arrow /></Link></article>)}
       </div></section>
       <Consultation go={go} />
     </>
