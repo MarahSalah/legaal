@@ -1218,9 +1218,9 @@ function LeilaKhaledProfile({ go }: { go: (to: string) => void }) {
           <SectionHeader title="تواصل مع المحامية ليلى خالد" />
           <p className="lead">إذا كنت بحاجة إلى استشارة قانونية في قضايا العمل، أو التنفيذ، أو المطالبات المالية، أو متابعة الإجراءات القانونية، فإن المحامية ليلى خالد وفريق شركة بيت الترافع لأعمال المحاماة والتحكيم على استعداد لتقديم الدعم القانوني بما يتناسب مع طبيعة قضيتك واحتياجاتك.</p>
           <p className="lead">يمكنك التواصل معها مباشرة من خلال الاتصال على الهاتف التالي:</p>
-          <p className="lead">962782343333+</p>
+          <p className="lead"><a href="tel:+962782343333" dir="ltr">962782343333+</a></p>
           <p className="lead">أو من خلال واتس آب بالضغط على رابط واتساب الخاص بها:</p>
-          <p className="lead"><strong>تواصل واتساب</strong></p>
+          <p className="lead"><a href="https://wa.me/962782343333" target="_blank" rel="noreferrer"><strong>تواصل واتساب 962782343333+</strong></a></p>
         </div>
       </section>
       <Consultation go={go} />
