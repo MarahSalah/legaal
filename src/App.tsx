@@ -923,7 +923,7 @@ function InsuranceLawyerJordan({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر: <a href="tel:+962798080228" dir="ltr">962798080228+</a></p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</p>
-          <p className="lead">واتس آب:</p>
+          <p className="lead">واتس آب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1067,7 +1067,7 @@ function JordanianLawyerNumber({ go }: { go: (to: string) => void }) {
           <p className="lead">962782343333+</p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a>.</p>
           <p className="lead">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</p>
-          <p className="lead">واتس آب:</p>
+          <p className="lead">واتس آب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1109,7 +1109,7 @@ function TrustedJordanianLawyerNumber({ go }: { go: (to: string) => void }) {
           <p className="lead">962782343333+</p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead"><a href="https://maps.app.goo.gl/5BJtcnnpKYoED7WTA?g_st=ac">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102)</a>.</p>
-          <p className="lead"><strong>واتس آب:</strong></p>
+          <p className="lead"><strong>واتس آب:</strong> <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1270,7 +1270,7 @@ function CompensationCasesJordan({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر: 962798080228+</p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead"><a href="https://maps.app.goo.gl/DdQr9daSYcbFSg5M7?g_st=ac">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</a></p>
-          <p className="lead"><strong>واتس آب:</strong></p>
+          <p className="lead"><strong>واتس آب:</strong> <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1330,7 +1330,7 @@ function RentDisputesJordan({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر: 962798080228+</p>
           <p className="lead">📧 البريد الإلكتروني: lawyerabdullah960@gmail.com</p>
           <p className="lead">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</p>
-          <p className="lead">واتس آب:</p>
+          <p className="lead">واتس آب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
