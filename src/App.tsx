@@ -185,7 +185,7 @@ function Navbar({ path, go }: { path: string; go: (to: string) => void }) {
         </button>
       </div>
       <div className={`mobile-nav ${open ? "open" : ""}`}>
-        {nav.map(([to, label], index) => <Link key={to} to={to} go={go} onClick={() => setOpen(false)}><small>{String(index + 1).padStart(2, "0")}</small>{label}</Link>)}
+        {nav.map(([to, label], index) => <Link key={to} to={to} go={go} onClick={() => setOpen(false)}><small>{String(index === 4 ? services.length : index > 4 ? index : index + 1).padStart(2, "0")}</small>{label}</Link>)}
         <Button to="/contact" go={go} onClick={() => setOpen(false)}>احجز استشارة</Button>
       </div>
     </header>
