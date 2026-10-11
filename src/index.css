@@ -2160,3 +2160,262 @@ body { background: #f8f5ee; }
     transform: none;
   }
 }
+
+
+/* Lawyer profiles: clearer hierarchy, breathing room, and editorial cards */
+.profile-head--layla .profile-grid,
+.profile-head--abdullah .profile-grid {
+  align-items: center;
+}
+
+.profile-head .breadcrumb {
+  margin-bottom: clamp(34px, 5vw, 58px);
+}
+
+.profile-head .profile-grid > div:first-child {
+  max-width: 760px;
+}
+
+.profile-head .profile-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 9px 15px;
+  border: 1px solid rgba(168, 137, 93, .32);
+  background: rgba(251, 248, 240, .7);
+  color: var(--olive);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.profile-head .profile-role::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.profile-head .profile-stats {
+  margin-top: 34px;
+  gap: 12px;
+}
+
+.profile-head .profile-stats > div {
+  min-height: 100px;
+  padding: 20px 22px;
+  gap: 8px;
+  border-radius: 3px;
+  border-color: rgba(38, 53, 47, .13);
+  box-shadow: 0 8px 24px rgba(38, 53, 47, .035);
+}
+
+.profile-head .profile-stats > div span {
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: .025em;
+}
+
+.profile-head .profile-stats > div strong,
+.profile-head .profile-stats > div a {
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.profile-head .profile-portrait {
+  border-radius: 3px;
+}
+
+.profile-expertise {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-expertise .section-header {
+  max-width: 760px;
+  margin-bottom: 42px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(38, 53, 47, .17);
+}
+
+.profile-expertise .section-header > * {
+  max-width: 100%;
+}
+
+.profile-expertise .section-header .eyebrow {
+  letter-spacing: .08em;
+}
+
+.profile-expertise .section-intro {
+  max-width: 660px;
+  margin-top: 12px;
+  line-height: 2;
+  color: var(--muted, #68685d);
+}
+
+.profile-expertise .expertise-list {
+  gap: 16px;
+  align-items: stretch;
+}
+
+.profile-expertise .expertise-list > .profile-area-card {
+  position: relative;
+  min-height: 138px;
+  padding: 25px 24px;
+  align-items: start;
+  gap: 17px;
+  border: 1px solid rgba(38, 53, 47, .13);
+  border-radius: 3px;
+  background: rgba(251, 248, 240, .92);
+  box-shadow: 0 8px 22px rgba(38, 53, 47, .03);
+}
+
+.profile-expertise .expertise-list > .profile-area-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: rgba(168, 137, 93, .62);
+  transform: scaleX(.22);
+  transform-origin: right;
+  transition: transform .3s ease;
+}
+
+.profile-expertise .expertise-list > .profile-area-card:hover::before {
+  transform: scaleX(1);
+}
+
+.profile-expertise .expertise-list > .profile-area-card > span {
+  width: 40px;
+  height: 40px;
+  border-radius: 2px;
+  font-size: 10px;
+  background: rgba(168, 137, 93, .09);
+}
+
+.profile-expertise .profile-area-copy {
+  min-width: 0;
+  padding-top: 1px;
+}
+
+.profile-expertise .profile-area-category {
+  display: block;
+  margin: 0 0 8px;
+  color: var(--gold);
+  font-size: 10px;
+  line-height: 1.7;
+  letter-spacing: .025em;
+}
+
+.profile-expertise .expertise-list > .profile-area-card h3 {
+  margin: 0;
+  padding: 0;
+  font-size: clamp(15px, 1.35vw, 17px);
+  font-weight: 400;
+  line-height: 1.95;
+  overflow-wrap: anywhere;
+}
+
+.profile-expertise .expertise-list > .profile-area-card--education {
+  background: rgba(246, 241, 231, .96);
+}
+
+.profile-expertise .expertise-list > .profile-area-card--education > span {
+  background: rgba(168, 137, 93, .16);
+}
+
+.profile-expertise .expertise-list > .profile-area-card--practice {
+  background: rgba(251, 248, 240, .96);
+}
+
+.profile-expertise .expertise-list > .profile-area-card:hover {
+  padding: 25px 24px;
+  transform: translateY(-3px);
+  border-color: rgba(168, 137, 93, .52);
+  box-shadow: 0 14px 30px rgba(38, 53, 47, .065);
+}
+
+@media (max-width: 800px) {
+  .profile-head .profile-stats {
+    margin-top: 28px;
+  }
+
+  .profile-head .profile-stats > div {
+    min-height: 90px;
+    padding: 17px;
+  }
+
+  .profile-expertise .section-header {
+    margin-bottom: 30px;
+    padding-bottom: 22px;
+  }
+
+  .profile-expertise .expertise-list > .profile-area-card {
+    min-height: 124px;
+    padding: 22px 18px;
+    gap: 13px;
+  }
+
+  .profile-expertise .expertise-list > .profile-area-card:hover {
+    padding: 22px 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .profile-head .breadcrumb {
+    margin-bottom: 32px;
+  }
+
+  .profile-head .profile-role {
+    font-size: 12px;
+  }
+
+  .profile-head .profile-stats {
+    margin-top: 26px;
+  }
+
+  .profile-head .profile-stats > div {
+    min-height: 78px;
+    padding: 16px;
+  }
+
+  .profile-expertise .section-header {
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+  }
+
+  .profile-expertise .expertise-list {
+    gap: 12px;
+  }
+
+  .profile-expertise .expertise-list > .profile-area-card {
+    min-height: 0;
+    padding: 20px 17px;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .profile-expertise .expertise-list > .profile-area-card:hover {
+    padding: 20px 17px;
+  }
+
+  .profile-expertise .expertise-list > .profile-area-card > span {
+    width: 34px;
+    height: 34px;
+  }
+
+  .profile-expertise .expertise-list > .profile-area-card h3 {
+    font-size: 14px;
+    line-height: 1.95;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-expertise .expertise-list > .profile-area-card::before {
+    transition: none;
+  }
+}
