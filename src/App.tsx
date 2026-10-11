@@ -1808,6 +1808,7 @@ export default function App() {
   else if (path === "/abdullah-al-zubaidi-commercial-law") page = <AbdullahAlZubaidiCommercialLaw go={go} />;
   else if (path === "/about") page = <About go={go} />;
   else if (path === "/services") page = <Services go={go} />;
+  else if (path === "/insolvency-lawyer-amman") page = <ServiceDetail slug="insolvency" go={go} />;
   else if (path.startsWith("/services/")) page = <ServiceDetail slug={path.split("/")[2]} go={go} />;
   else if (path.startsWith("/team/")) page = <LawyerProfile person={path.split("/")[2]} go={go} />;
   else if (path === "/blog") page = <Blog go={go} />;
