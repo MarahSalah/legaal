@@ -557,7 +557,7 @@ function Contact({ go }: { go: (to: string) => void }) {
     ["02", "واتساب", "+962 79 808 0228", "المحامي عبدالله الزبيدي", "https://wa.me/962798080228"],
     ["03", "الهاتف", "+962 78 234 3333", "ليلى خالد أبو الرُب", "tel:+962782343333"],
     ["04", "واتساب", "+962 78 234 3333", "المحامية ليلى خالد أبو الرُب", "https://wa.me/962782343333"],
-    ["05", "العنوان", "عمّان - شارع الأميرة رحمة بنت الحسن", "", "https://maps.google.com/?q=Princess+Rahma+Bint+Al+Hassan+Street+Amman"],
+    ["05", "العنوان", "عمّان، خلدا، شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102", "", "https://maps.app.goo.gl/DdQr9daSYcbFSg5M7?g_st=ac"],
   ];
   return (
     <>
@@ -567,7 +567,7 @@ function Contact({ go }: { go: (to: string) => void }) {
           <div className="contact-index">{rows.map(([no, label, value, sub, href]) => <a key={no} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer"><span className="contact-icon"><Icon name={label === "الهاتف" ? "phone" : label === "واتساب" ? "whatsapp" : "pin"} /></span><small>{label}</small><strong dir={label === "الهاتف" || label === "واتساب" ? "ltr" : "rtl"}>{value}</strong><em>{sub}</em><Arrow /></a>)}</div>
           <div className="email-note"><span>البريد الإلكتروني</span><a dir="ltr" href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></div>
         </div>
-        <div className="location"><div className="map-frame"><span>LOCATION / AMMAN</span><iframe title="موقع شركة بيت الترافع في عمّان" src="https://www.google.com/maps?q=Princess%20Rahma%20Bint%20Al%20Hassan%20Street%2C%20Amman%2C%20Jordan&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe></div><p>عمّان — شارع الأميرة رحمة بنت الحسن</p><a href="https://maps.google.com/?q=Princess+Rahma+Bint+Al+Hassan+Street+Amman" target="_blank" rel="noreferrer">فتح الموقع <Arrow /></a></div>
+        <div className="location"><div className="map-frame"><span>LOCATION / AMMAN</span><iframe title="موقع شركة بيت الترافع في عمّان" src="https://www.google.com/maps?q=Jerusalem%20Commercial%20Complex%2C%20Khalda%2C%20Amman%2C%20Jordan&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe></div><p>عمّان، خلدا، شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102</p><a href="https://maps.app.goo.gl/DdQr9daSYcbFSg5M7?g_st=ac" target="_blank" rel="noreferrer">فتح الموقع <Arrow /></a></div>
       </div></section>
       <section className="contact-final"><div className="container"><h2>جاهز لاتخاذ الخطوة الصحيحة؟</h2><Button to="/contact" go={go}>احجز استشارة</Button></div></section>
     </>
@@ -707,7 +707,7 @@ function Admin({ go }: { go: (to: string) => void }) {
 }
 
 function Footer({ go }: { go: (to: string) => void }) {
-  return <footer><div className="container footer-grid"><div className="footer-brand"><img src="/assets/logo-dark.png" alt="بيت الترافع لأعمال المحاماة والتحكيم" /><p>شركة بيت الترافع لأعمال المحاماة والتحكيم</p><span className="footer-location"><Icon name="pin" size={17} />عمّان - شارع الأميرة رحمة بنت الحسن</span></div><div><strong>روابط</strong>{nav.slice(0, 5).map(([to, label]) => <Link key={to} to={to} go={go}>{label}</Link>)}</div><div><strong>تواصل</strong><a className="footer-phone" dir="ltr" href="tel:+962798080228"><Icon name="phone" size={16} />+962 79 808 0228</a><a className="footer-phone" dir="ltr" href="tel:+962782343333"><Icon name="phone" size={16} />+962 78 234 3333</a><a dir="ltr" href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a><Button to="/contact" go={go}>احجز استشارة</Button></div></div><div className="footer-bottom container"><span>© {new Date().getFullYear()} بيت الترافع</span><Link to="/login" go={go}>دخول الإدارة</Link><span>AMMAN / JORDAN</span></div></footer>;
+  return <footer><div className="container footer-grid"><div className="footer-brand"><img src="/assets/logo-dark.png" alt="بيت الترافع لأعمال المحاماة والتحكيم" /><p>شركة بيت الترافع لأعمال المحاماة والتحكيم</p><span className="footer-location"><Icon name="pin" size={17} />عمّان، خلدا، شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102</span></div><div><strong>روابط</strong>{nav.slice(0, 5).map(([to, label]) => <Link key={to} to={to} go={go}>{label}</Link>)}</div><div><strong>تواصل</strong><a className="footer-phone" dir="ltr" href="tel:+962798080228"><Icon name="phone" size={16} />+962 79 808 0228</a><a className="footer-phone" dir="ltr" href="tel:+962782343333"><Icon name="phone" size={16} />+962 78 234 3333</a><a dir="ltr" href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a><Button to="/contact" go={go}>احجز استشارة</Button></div></div><div className="footer-bottom container"><span>© {new Date().getFullYear()} بيت الترافع</span><Link to="/login" go={go}>دخول الإدارة</Link><span>AMMAN / JORDAN</span></div></footer>;
 }
 
 function WhatsAppFloat() {
