@@ -2916,3 +2916,36 @@ section.profile-expertise .profile-expertise-copy h3 {
   .rich-editor-surface { height: clamp(420px, 60vh, 640px); max-height: 76vh; padding: 18px; font-size: 15px; }
   .rich-editor-footer { align-items: flex-start; flex-direction: column; gap: 4px; }
 }
+
+
+/* Empty states for the dynamic blog and law archives */
+.content-empty-state {
+  min-height: 300px;
+  padding: 56px 28px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.content-empty-state > span {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: .12em;
+  margin-bottom: 18px;
+}
+.content-empty-state h2 {
+  margin: 0 0 12px;
+  color: var(--olive);
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 500;
+}
+.content-empty-state p {
+  max-width: 520px;
+  margin: 0;
+  color: var(--olive-3);
+  font-size: 13px;
+  line-height: 1.9;
+}
