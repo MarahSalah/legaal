@@ -1672,38 +1672,145 @@ function compressImage(file: File) {
 function RichTextEditor({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   const editorRef = useRef<HTMLDivElement>(null);
   const savedSelection = useRef<Range | null>(null);
-  useEffect(() => { if (editorRef.current && editorRef.current.innerHTML !== value) editorRef.current.innerHTML = value; }, [value]);
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (editor && editor.innerHTML !== value) editor.innerHTML = value;
+  }, [value]);
+
   const rememberSelection = () => {
     const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0 && editorRef.current?.contains(selection.anchorNode)) savedSelection.current = selection.getRangeAt(0).cloneRange();
+    const editor = editorRef.current;
+    if (!selection || !editor || selection.rangeCount === 0) return;
+    const range = selection.getRangeAt(0);
+    if (editor.contains(range.startContainer) && editor.contains(range.endContainer)) {
+      savedSelection.current = range.cloneRange();
+    }
   };
+
   const restoreSelection = () => {
+    const editor = editorRef.current;
+    if (!editor) return false;
+    editor.focus();
     const selection = window.getSelection();
-    if (selection && savedSelection.current) { selection.removeAllRanges(); selection.addRange(savedSelection.current); }
-    editorRef.current?.focus();
+    if (!selection) return false;
+    if (savedSelection.current) {
+      try {
+        selection.removeAllRanges();
+        selection.addRange(savedSelection.current);
+      } catch {
+        savedSelection.current = null;
+      }
+    }
+    if (selection.rangeCount === 0 || !editor.contains(selection.anchorNode)) {
+      const range = document.createRange();
+      range.selectNodeContents(editor);
+      range.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    return editor.contains(selection.anchorNode);
   };
+
   const command = (name: string, argument?: string) => {
-    restoreSelection(); document.execCommand(name, false, argument);
-    if (editorRef.current) onChange(editorRef.current.innerHTML);
-    rememberSelection();
+    if (!restoreSelection()) return;
+    try {
+      if (name === "hiliteColor" && !document.execCommand(name, false, argument)) {
+        document.execCommand("backColor", false, argument);
+      } else {
+        document.execCommand(name, false, argument);
+      }
+      const editor = editorRef.current;
+      if (editor) {
+        onChange(editor.innerHTML);
+        rememberSelection();
+      }
+    } catch (error) {
+      console.error("تعذر تطبيق تنسيق النص:", error);
+    }
   };
-  const button = (label: string, title: string, action: () => void) => <button type="button" className="rich-toolbar-button" aria-label={title} title={title} onMouseDown={(event) => event.preventDefault()} onClick={action}>{label}</button>;
+
+  const button = (label: string, title: string, action: () => void, className = "") => (
+    <button
+      type="button"
+      className={\`rich-toolbar-button \${className}\`.trim()}
+      aria-label={title}
+      title={title}
+      onMouseDown={(event) => { rememberSelection(); event.preventDefault(); }}
+      onClick={action}
+    >{label}</button>
+  );
+
+  const handleColor = (commandName: "foreColor" | "hiliteColor", color: string) => {
+    command(commandName, color);
+  };
+
   return <div className="rich-editor" dir="rtl">
     <div className="rich-toolbar" role="toolbar" aria-label="أدوات تنسيق المحتوى">
-      <label className="rich-toolbar-select" title="نوع الخط"><span>الخط</span><select defaultValue="Arial" onMouseDown={rememberSelection} onChange={(event) => command("fontName", event.target.value)}><option value="Arial">Arial</option><option value="Tahoma">Tahoma</option><option value="Georgia">Georgia</option><option value="Times New Roman">Times New Roman</option><option value="Verdana">Verdana</option></select></label>
-      <label className="rich-toolbar-select" title="حجم الخط"><span>الحجم</span><select defaultValue="3" onMouseDown={rememberSelection} onChange={(event) => command("fontSize", event.target.value)}><option value="2">صغير</option><option value="3">عادي</option><option value="4">كبير</option><option value="5">أكبر</option><option value="6">كبير جدًا</option></select></label>
-      
-      {button("B", "عريض", () => command("bold"))}{button("I", "مائل", () => command("italic"))}{button("U", "تحته خط", () => command("underline"))}{button("S", "يتوسطه خط", () => command("strikeThrough"))}
-      <label className="rich-color" title="لون النص"><span>A</span><input aria-label="لون النص" type="color" defaultValue="#34312e" onMouseDown={rememberSelection} onChange={(event) => command("foreColor", event.target.value)} /></label>
-      <label className="rich-color rich-highlight" title="لون خلفية النص"><span>▰</span><input aria-label="لون خلفية النص" type="color" defaultValue="#fff0a8" onMouseDown={rememberSelection} onChange={(event) => command("hiliteColor", event.target.value)} /></label>
-      <label className="rich-toolbar-select" title="تنسيق الفقرة"><span>العناوين</span><select defaultValue="P" onMouseDown={rememberSelection} onChange={(event) => command("formatBlock", event.target.value)}><option value="P">فقرة</option><option value="H1">عنوان رئيسي</option><option value="H2">عنوان فرعي</option><option value="H3">عنوان صغير</option><option value="BLOCKQUOTE">اقتباس</option></select></label>
-      {button("يمين", "محاذاة لليمين", () => command("justifyRight"))}{button("وسط", "محاذاة للوسط", () => command("justifyCenter"))}{button("يسار", "محاذاة لليسار", () => command("justifyLeft"))}
-      {button("• قائمة", "قائمة نقطية", () => command("insertUnorderedList"))}{button("1. قائمة", "قائمة مرقمة", () => command("insertOrderedList"))}
-      {button("رابط", "إضافة رابط", () => { const url = window.prompt("أدخل الرابط"); if (url) command("createLink", url); })}
-      {button("↶", "تراجع", () => command("undo"))}{button("↷", "إعادة", () => command("redo"))}{button("مسح التنسيق", "إزالة التنسيق عن النص المحدد", () => command("removeFormat"))}
+      <label className="rich-toolbar-select" title="نوع الخط">
+        <span>الخط</span>
+        <select defaultValue="Arial" onPointerDown={rememberSelection} onChange={(event) => command("fontName", event.target.value)}>
+          <option value="Arial">Arial</option><option value="Tahoma">Tahoma</option><option value="Georgia">Georgia</option><option value="Times New Roman">Times New Roman</option><option value="Verdana">Verdana</option>
+        </select>
+      </label>
+      <label className="rich-toolbar-select" title="حجم الخط">
+        <span>الحجم</span>
+        <select defaultValue="3" onPointerDown={rememberSelection} onChange={(event) => command("fontSize", event.target.value)}>
+          <option value="2">صغير</option><option value="3">عادي</option><option value="4">كبير</option><option value="5">أكبر</option><option value="6">كبير جدًا</option>
+        </select>
+      </label>
+      {button("B", "عريض", () => command("bold"))}
+      {button("I", "مائل", () => command("italic"))}
+      {button("U", "تحته خط", () => command("underline"))}
+      {button("S", "يتوسطه خط", () => command("strikeThrough"))}
+      <label className="rich-color" title="لون النص">
+        <span>A</span><input aria-label="لون النص" type="color" defaultValue="#34312e" onPointerDown={rememberSelection} onChange={(event) => handleColor("foreColor", event.target.value)} />
+      </label>
+      <label className="rich-color rich-highlight" title="لون خلفية النص">
+        <span>▰</span><input aria-label="لون خلفية النص" type="color" defaultValue="#fff0a8" onPointerDown={rememberSelection} onChange={(event) => handleColor("hiliteColor", event.target.value)} />
+      </label>
+      <label className="rich-toolbar-select" title="تنسيق الفقرة">
+        <span>العناوين</span>
+        <select defaultValue="P" onPointerDown={rememberSelection} onChange={(event) => {
+          const tag = event.target.value;
+          command("formatBlock", tag === "BLOCKQUOTE" ? "blockquote" : tag.toLowerCase());
+        }}>
+          <option value="P">فقرة</option><option value="H1">عنوان رئيسي</option><option value="H2">عنوان فرعي</option><option value="H3">عنوان صغير</option><option value="BLOCKQUOTE">اقتباس</option>
+        </select>
+      </label>
+      {button("يمين", "محاذاة لليمين", () => command("justifyRight"))}
+      {button("وسط", "محاذاة للوسط", () => command("justifyCenter"))}
+      {button("يسار", "محاذاة لليسار", () => command("justifyLeft"))}
+      {button("• قائمة", "قائمة نقطية", () => command("insertUnorderedList"))}
+      {button("1. قائمة", "قائمة مرقمة", () => command("insertOrderedList"))}
+      {button("رابط", "إضافة رابط", () => {
+        rememberSelection();
+        const url = window.prompt("أدخل الرابط (https:// أو mailto: أو tel:)");
+        if (url && /^(https?:\/\/|mailto:|tel:)/i.test(url.trim())) command("createLink", url.trim());
+      })}
+      {button("↶", "تراجع", () => command("undo"))}
+      {button("↷", "إعادة", () => command("redo"))}
+      {button("مسح التنسيق", "إزالة التنسيق عن النص المحدد", () => command("removeFormat"))}
     </div>
-    <div ref={editorRef} className="rich-editor-surface" contentEditable suppressContentEditableWarning role="textbox" aria-label="محتوى المقال أو القانون" aria-multiline="true" data-placeholder="اكتب المقال أو نص القانون هنا، وحدد أي جزء لتنسيقه..." onInput={(event) => onChange(event.currentTarget.innerHTML)} onKeyUp={rememberSelection} onMouseUp={rememberSelection} />
-    <div className="rich-editor-footer"><span>يدعم العربية والإنجليزية والتنسيق داخل النص</span><span>{value.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").trim().length} حرفًا تقريبًا</span></div>
+    <div
+      ref={editorRef}
+      className="rich-editor-surface"
+      contentEditable
+      suppressContentEditableWarning
+      role="textbox"
+      aria-label="محتوى المقال أو القانون"
+      aria-multiline="true"
+      data-placeholder="اكتب المقال أو نص القانون هنا، وحدد أي جزء لتنسيقه..."
+      onInput={(event) => { onChange(event.currentTarget.innerHTML); rememberSelection(); }}
+      onKeyUp={rememberSelection}
+      onMouseUp={rememberSelection}
+      onTouchEnd={rememberSelection}
+      onBlur={rememberSelection}
+    />
+    <div className="rich-editor-footer">
+      <span>يدعم العربية والإنجليزية والتنسيق داخل النص</span>
+      <span>{value.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").trim().length} حرفًا تقريبًا</span>
+    </div>
   </div>;
 }
 
