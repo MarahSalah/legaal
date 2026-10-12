@@ -1733,7 +1733,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (value: 
   const button = (label: string, title: string, action: () => void, className = "") => (
     <button
       type="button"
-      className={\`rich-toolbar-button \${className}\`.trim()}
+      className={"rich-toolbar-button " + className.trim()}
       aria-label={title}
       title={title}
       onMouseDown={(event) => { rememberSelection(); event.preventDefault(); }}
