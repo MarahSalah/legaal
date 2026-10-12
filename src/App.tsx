@@ -1442,6 +1442,19 @@ function LawyerProfile({ person, go }: { person: string; go: (to: string) => voi
           <div className="profile-stats"><div><span>الخبرة</span><strong>{data.exp}</strong></div><div><span>الدور</span><strong>{data.role}</strong></div><div><span>رقم التلفون</span><strong dir="ltr">{data.phone}</strong></div><div><span>واتس</span><a className="profile-whatsapp" href={`https://wa.me/${data.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={15} />فتح واتساب</a></div></div>
         </div><div className={`profile-portrait ${abdullah ? "has-photo" : ""}`}>{abdullah ? <img src="/assets/abdullah.jpg" alt="المحامي عبدالله الزبيدي" /> : <span>{data.letter}</span>}</div></div>
       </div></section>
+      <section className={`profile-banner profile-banner--${abdullah ? "abdullah" : "layla"}`} aria-label="نبذة عن المسيرة المهنية">
+        <div className="container">
+          <div className="profile-banner-inner">
+            <span className="profile-banner-mark" aria-hidden="true">§</span>
+            <div className="profile-banner-copy">
+              <span className="profile-banner-kicker">{abdullah ? "مجالات العمل القانوني" : "المؤهلات والمسيرة المهنية"}</span>
+              <h2>{abdullah ? "رؤية قانونية تبدأ من فهم التفاصيل" : "مسيرة مهنية تجمع المعرفة والخبرة"}</h2>
+              <p>{abdullah ? "تعرّف على مجالات العمل والخدمات القانونية، وتواصل مباشرة للاستفسار." : "تعرّف على المؤهلات الأكاديمية والخبرة العملية ومجالات التخصص."}</p>
+            </div>
+            <span className="profile-banner-index" aria-hidden="true">{data.index}</span>
+          </div>
+        </div>
+      </section>
       <section className={`expertise profile-expertise profile-expertise--${abdullah ? "abdullah" : "layla"}`}><div className="container narrow"><SectionHeader eyebrow={abdullah ? "التخصص القانوني" : "المؤهلات والمسيرة"} title={abdullah ? "مجالات العمل" : "المؤهلات والخبرة العملية"} intro={abdullah ? "مجالات قانونية يعمل عليها المحامي ضمن منهج واضح ومتابعة دقيقة." : "المؤهلات الأكاديمية والخبرة العملية، مرتبة في أقسام واضحة وسهلة القراءة."} /><ol className="profile-expertise-grid">{data.areas.map((area, index) => <li className={`profile-expertise-card ${!abdullah && index < 2 ? "profile-expertise-card--education" : "profile-expertise-card--practice"}`} data-profile-index={index + 1} key={area}><span className="profile-expertise-number">{String(index + 1).padStart(2, "0")}</span><div className="profile-expertise-copy">{!abdullah && <small className="profile-expertise-category">{index === 0 ? "المؤهل الأكاديمي" : index === 1 ? "التميز الأكاديمي" : "مجال الخبرة"}</small>}<h3>{area}</h3></div></li>)}</ol></div></section>
       <Consultation go={go} />
     </>
