@@ -26,81 +26,6 @@ const services: Service[] = [
   { slug: "criminal", title: "محامي قضايا جزائية في الأردن", description: "تمثيل قانوني صارم ودفاع استراتيجي في كافة القضايا الجنائية والجنحوية، والدفاع عن الحقوق الشخصية واستردادها أمام المحاكم المختصة لحماية حريتك وسمعتك" },
 ];
 
-const blogTitles = [
-  "القضايا الشائعة في المحاكم الأردنية وإجراءاتها واختصاصات القضاء",
-  "نطاق تطبيق نظام المعاملات المدنية السعودي وآلية احتساب المدد النظامية",
-  "الشخصية الطبيعية وأحكام القرابة ودرجاتها في نظام المعاملات المدنية السعودي",
-  "كيفية معالجة الجرائم الإلكترونية: خطوات قانونية تنصح بها شركة محاماة في الأردن",
-  "التزييف العميق واختراق الخصوصية وتركيب الصور والفيديوهات المادة 20 جرائم إلكترونية أردني",
-  "ملاحقة الجرائم الإلكترونية المرتكبة من خارج الأردن | المادة 38 جرائم إلكترونية",
-  "عقوبة نشر الأخبار الكاذبة والشائعات الرقمية | قانون الجرائم الإلكترونية الأردني",
-  "عقوبة سرقة واختراق المحافظ الإلكترونية وكليك",
-  "حيازة وتداول أدوات وكلمات سر بهدف ارتكاب جرائم",
-  "القرصنة الإلكترونية والاعتداء على الملكية الفكرية البرمجية",
-  "عقوبة تحويل الأموال غير المشروع والاحتيال الرقمي",
-  "الاحتيال الإلكتروني والاعتداء على البطاقات المصرفية",
-  "انتحال الشخصية والتزوير الرقمي",
-  "جريمة الدخول غير المصرح به للأنظمة المعلوماتية",
-  "المسؤولية القانونية في الفضاء الرقمي: خطاب الكراهية والذم والقدح والتحقير",
-  "حجية الدليل الرقمي في القانون الأردني: القيمة القانونية للرسائل والتسجيلات الإلكترونية",
-  "اغتيال السمعة الرقمية: كيف تواجه الابتزاز والتشهير الإلكتروني؟",
-  "التعديلات الجديدة لعام 2026 على منح الجنسية الأردنية والإقامة للمستثمر الأجنبي وعائلته",
-  "عقود العمل عن بعد وطرق حماية الشركات لأسرارها وملكيتها الفكرية",
-  "شرط التحكيم كوسيلة بديلة لحل النزاعات",
-  "الأركان القانونية لترخيص المتاجر الإلكترونية وحماية البيانات في الأردن لعام 2026",
-  "دليل الاستثمار الأجنبي في الأردن لعام 2026: الشروط، الحوافز، والقيود القطاعية",
-  "الامتثال والنزاعات الضريبية للشركات في الأردن وكيفية تجنب الغرامات الفورية",
-  "دليل حوكمة الشركات في الأردن: تنظيم الصلاحيات والامتثال القانوني",
-  "حوكمة الشركات العائلية وآليات انتقال الإدارة في القانون الأردني",
-  "الفرق بين الشركة ذات المسؤولية المحدودة والمساهمة الخاصة بالقانون الأردني",
-  "دليل الشركات ذات المسؤولية المحدودة في الأردن",
-  "توازن الحقوق والواجبات في قانون العمل والنزاعات العمالية في الأردن",
-  "الاستشارة القانونية في الأردن",
-  "العقود والاتفاقيات القانونية في الأردن",
-  "قضايا الأفراد والتمثيل القضائي في الأردن",
-  "قضايا الشركات والاستشارات التجارية في الأردن",
-  "دليل للمتضررين من الاحتيال الإلكتروني في الأردن",
-  "الحماية القانونية للإجازة السنوية في القانون الأردني",
-  "نموذج عقد عمل تحت التجربة",
-  "الطبيعة القانونية لسند الأمانة في التشريع الأردني",
-  "المحامي القوي حجر الزاوية والأساس المتين في نجاح القضية",
-  "إلغاء الحماية الجزائية عن الشيكات البنكية في القانون الأردني",
-  "حبس المدين التنفيذي في القانون الأردني",
-  "المسؤولية القانونية عن أخطاء أنظمة الذكاء الاصطناعي في التشريع الأردني",
-  "جريمة الاحتيال المباشر والإلكتروني في الأردن",
-  "التعويض عن الإصابات الجسدية في القانون الأردني",
-  "تأسيس الشركات في الأردن من حيث الطريقة المثلى للمستثمرين",
-  "الحكمة في اختيار المحامي لضمان التمثيل القانوني الأمثل",
-  "المحامي المتخصص: لماذا هو خيارك الأفضل؟",
-];
-
-const blogDates = [
-  "2026-09-09", "2026-08-30", "2026-08-30", "2026-08-24", "2026-08-24", "2026-08-24",
-  "2026-08-12", "2026-08-12", "2026-08-11", "2026-08-11", "2026-08-11", "2026-07-27",
-  "2026-07-26", "2026-07-26", "2026-07-19", "2026-07-19", "2026-07-19", "2026-07-18",
-  "2026-07-13", "2026-07-04", "2026-07-02", "2026-07-01", "2026-07-01", "2026-07-01",
- "2026-06-29", "2026-06-27", "2026-06-27", "2026-06-07", "2026-06-07",
-  "2026-05-21", "2026-05-21", "2026-05-21", "2026-05-18", "2026-02-16", "2026-01-19",
-  "2026-01-19", "2026-01-14", "2026-01-14", "2026-01-14", "2026-01-10", "2025-10-29",
-  "2025-10-14", "2025-10-07", "2025-10-07", "2025-10-07",
-];
-
-const blogPosts = blogTitles.map((title, index) => ({
-  title,
-  date: blogDates[index],
-}));
-
-const laws = [
-  ["قانون الجرائم الإلكترونية رقم 17 لسنة 2023 مع آخر التعديلات حتى 2026", "27 يوليو 2026"],
-  ["قانون محاكم الصلح 2026", "2 يونيو 2026"],
-  ["قانون الأحوال المدنية وفقاً لآخر التعديلات حتى 2026", "17 مايو 2026"],
-  ["قانون التنفيذ الأردني وفقاً لآخر التعديلات حتى 2026", "10 يناير 2026"],
-  ["قانون المالكين والمستأجرين مع كامل التعديلات", "2 أكتوبر 2024"],
-  ["قانون أصول المحاكمات المدنية", "20 مارس 2021"],
-  ["القانون المدني في الأردن", "16 مارس 2021"],
-  ["نصوص تنفيذ الاحكام الأجنبية في مصر", "13 أكتوبر 2012"],
-];
-
 const faqs = [
   ["ما هي آليتكم في تجنب النزاعات القضائية للشركات؟", "يعتمد فريقنا في شركة بيت الترافع على حلول استباقية تتضمن مراجعة وصياغة العقود بدقة متناهية وتقديم استشارات قانونية تجارية مستمرة تغلق أي ثغرات قانونية قبل نشوب النزاع، مما يوفر على المنشأة الوقت والتكاليف القضائية."],
   ["كيف يضمن محامي شركات في عمان صياغة عقود عمل تحمي المنشأة والموظف معاً؟", "يقوم محامي شركات في عمان بدراسة طبيعة عمل مؤسستك وصياغة لوائح داخلية وعقود عمل تتوافق مع قانون العمل الأردني، مما يضمن تحديد الواجبات والحقوق بوضوح ويمنع الخلافات العمالية المستقبلية."],
@@ -1462,23 +1387,27 @@ function LawyerProfile({ person, go }: { person: string; go: (to: string) => voi
 }
 
 function Blog({ go }: { go: (to: string) => void }) {
-  const [visible, setVisible] = useState(12);
   const [published, setPublished] = useState<PublishedContent[]>([]);
   useEffect(() => {
     let active = true;
     listPublishedContent("blog").then((items) => { if (active) setPublished(items); });
     return () => { active = false; };
   }, []);
-  const showMore = () => setVisible((current) => Math.min(current + 12, blogPosts.length));
   return (
     <>
       <PageHero title="المدونة" intro="ملاحظات قانونية مرتبة للقراءة والرجوع." visual="blog" />
       <section className="archive"><div className="container">
-        <div className="notes-grid">
-          {published.map((post) => <BlogNoteCard key={post.id} post={post} path={`/blog/published/${post.id}`} go={go} />)}
-          {blogPosts.slice(0, visible).map((post, index) => <BlogNoteCard key={post.title} post={post} path={`/blog/${index + 1}`} go={go} />)}
-        </div>
-        {visible < blogPosts.length && <button className="load-more" onClick={showMore}>اكتشف المزيد <Arrow /></button>}
+        {published.length > 0 ? (
+          <div className="notes-grid">
+            {published.map((post) => <BlogNoteCard key={post.id} post={post} path={`/blog/published/${post.id}`} go={go} />)}
+          </div>
+        ) : (
+          <div className="content-empty-state">
+            <span>المدونة</span>
+            <h2>لا توجد مقالات منشورة بعد</h2>
+            <p>ستظهر هنا المقالات الجديدة فور نشرها من لوحة الإدارة.</p>
+          </div>
+        )}
       </div></section>
     </>
   );
@@ -1512,35 +1441,6 @@ function BlogNoteCard({ post, path, go }: { post: { title: string; date: string 
   );
 }
 
-function ContentBody({ id, type }: { id: number; type: "article" | "law" }) {
-  const [content, setContent] = useState<{ html: string; date: string; source: string } | null>(null);
-  const [missing, setMissing] = useState(false);
-  useEffect(() => {
-    const controller = new AbortController();
-    setContent(null);
-    setMissing(false);
-    const directory = type === "article" ? "articles" : "laws";
-    fetch(`/content/${directory}/${id}.json`, { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) throw new Error("Content not found");
-        return response.json();
-      })
-      .then(setContent)
-      .catch((error) => {
-        if (error.name !== "AbortError") setMissing(true);
-      });
-    return () => controller.abort();
-  }, [id, type]);
-  if (missing) return <p className="content-unavailable">لا يتوفر نص معتمد لهذه المادة في المصدر القديم.</p>;
-  if (!content) return <div className="content-loading"><span></span><span></span><span></span></div>;
-  return <article className="imported-content" dangerouslySetInnerHTML={{ __html: content.html }} />;
-}
-
-function ArticleDetail({ id, go }: { id: number; go: (to: string) => void }) {
-  const post = blogPosts[id - 1] || blogPosts[0];
-  return <section className="detail-page article-detail"><div className="container narrow"><Breadcrumb items={[["الرئيسية", "/"], ["المدونة", "/blog"], [post.title, ""]]} go={go} /><h1>{post.title}</h1>{post.date && <time>{formatDate(post.date)}</time>}<div className="detail-rule"></div><ContentBody id={id} type="article" /><ShareControls /><Link to="/blog" go={go} className="back-link"><Arrow /> العودة إلى المدونة</Link></div></section>;
-}
-
 function Laws({ go }: { go: (to: string) => void }) {
   const [published, setPublished] = useState<PublishedContent[]>([]);
   useEffect(() => {
@@ -1552,20 +1452,16 @@ function Laws({ go }: { go: (to: string) => void }) {
     <>
       <PageHero title="القوانين" intro="أرشيف مرجعي منظم للنصوص القانونية المعتمدة." visual="laws" />
       <section className="laws"><div className="container narrow">
-        {published.map((item, index) => <article className="law-card" key={item.id}><div><span>LAW {String(index + 1).padStart(2, "0")}</span><time>{formatDate(item.date)}</time></div><h2>{item.title}</h2><Link to={`/laws/published/${item.id}`} go={go}>عرض القانون <Arrow /></Link></article>)}
-        {laws.map(([title, date], index) => <LawCard key={title} title={title} date={date} index={index} go={go} />)}
+        {published.length > 0 ? published.map((item, index) => <article className="law-card" key={item.id}><div><span>LAW {String(index + 1).padStart(2, "0")}</span><time>{formatDate(item.date)}</time></div><h2>{item.title}</h2><Link to={`/laws/published/${item.id}`} go={go}>عرض القانون <Arrow /></Link></article>) : (
+          <div className="content-empty-state">
+            <span>القوانين</span>
+            <h2>لا توجد قوانين منشورة بعد</h2>
+            <p>ستظهر هنا القوانين الجديدة فور نشرها من لوحة الإدارة.</p>
+          </div>
+        )}
       </div></section>
     </>
   );
-}
-
-function LawCard({ title, date, index, go }: { title: string; date: string; index: number; go: (to: string) => void }) {
-  return <article className="law-card"><div><span>LAW {String(index + 1).padStart(2, "0")}</span><time>{date}</time></div><h2>{title}</h2><Link to={`/laws/${index + 1}`} go={go}>عرض القانون <Arrow /></Link></article>;
-}
-
-function LawDetail({ id, go }: { id: number; go: (to: string) => void }) {
-  const law = laws[id - 1] || laws[0];
-  return <section className="detail-page article-detail"><div className="container narrow"><Breadcrumb items={[["الرئيسية", "/"], ["القوانين", "/laws"], [law[0], ""]]} go={go} /><h1>{law[0]}</h1><time>{law[1]}</time><div className="detail-rule"></div><ContentBody id={id} type="law" /><ShareControls /><Link to="/laws" go={go} className="back-link"><Arrow /> العودة إلى القوانين</Link></div></section>;
 }
 
 function PublishedDetail({ id, type, go }: { id: string; type: "blog" | "law"; go: (to: string) => void }) {
@@ -1979,10 +1875,8 @@ export default function App() {
   else if (path.startsWith("/team/")) page = <LawyerProfile person={path.split("/")[2]} go={go} />;
   else if (path === "/blog") page = <Blog go={go} />;
   else if (path.startsWith("/blog/published/")) page = <PublishedDetail id={path.split("/")[3]} type="blog" go={go} />;
-  else if (path.startsWith("/blog/")) page = <ArticleDetail id={Number(path.split("/")[2])} go={go} />;
   else if (path === "/laws") page = <Laws go={go} />;
   else if (path.startsWith("/laws/published/")) page = <PublishedDetail id={path.split("/")[3]} type="law" go={go} />;
-  else if (path.startsWith("/laws/")) page = <LawDetail id={Number(path.split("/")[2])} go={go} />;
   else if (path === "/faq") page = <FAQ />;
   else if (path === "/contact") page = <Contact go={go} />;
   else if (path === "/login") page = <Login go={go} />;
