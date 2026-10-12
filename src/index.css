@@ -3045,6 +3045,15 @@ section.profile-expertise .profile-expertise-copy h3 {
     animation: none;
   }
 
+  /* Lift the dossier and reduce the gap above it on phones only. */
+  .hero-visual-wrap {
+    margin-top: 8px;
+  }
+
+  .hero-document {
+    inset: -18px 0 0;
+  }
+
   .hero-reveal-image {
     animation-delay: 0s;
   }
