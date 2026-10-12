@@ -3037,24 +3037,15 @@ section.profile-expertise .profile-expertise-copy h3 {
 
 
 
-/* Mobile hero: keep the content and revealed photograph visible from the first frame.
-   Preserve the original document and gavel animation timing on desktop and tablet. */
+/* Mobile hero: reduce the space above the dossier without bypassing
+   the original reveal sequence or changing the content order. */
 @media (max-width: 520px) {
-  .hero-content {
-    opacity: 1;
-    animation: none;
-  }
-
-  /* Lift the dossier and reduce the gap above it on phones only. */
   .hero-visual-wrap {
     margin-top: 8px;
   }
 
   .hero-document {
-    inset: -18px 0 0;
-  }
-
-  .hero-reveal-image {
-    animation-delay: 0s;
+    inset: 12px 0 auto;
+    height: 340px;
   }
 }
