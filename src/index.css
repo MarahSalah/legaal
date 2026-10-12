@@ -3037,11 +3037,25 @@ section.profile-expertise .profile-expertise-copy h3 {
 
 
 
-/* Mobile hero: reduce the space above the dossier without bypassing
-   the original reveal sequence or changing the content order. */
+/* Mobile hero: place the visual before the copy so its hidden intro
+   does not reserve a large blank green area above the dossier. */
 @media (max-width: 520px) {
+  .hero-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
   .hero-visual-wrap {
-    margin-top: 8px;
+    order: 0;
+    width: 100%;
+    height: 340px;
+    margin-top: 0;
+  }
+
+  .hero-content {
+    order: 1;
+    padding-top: 0;
   }
 
   .hero-document {
