@@ -2614,3 +2614,116 @@ section.profile-expertise ol.expertise-list > li.profile-area-card h3 {
     height: 38px;
   }
 }
+
+
+/* Dedicated, conflict-free layout for lawyer profile credentials and expertise */
+section.profile-expertise ol.profile-expertise-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 0;
+}
+
+section.profile-expertise ol.profile-expertise-grid > li.profile-expertise-card {
+  display: grid !important;
+  grid-template-columns: 46px minmax(0, 1fr) !important;
+  align-content: start;
+  align-items: start;
+  gap: 17px !important;
+  position: relative;
+  min-width: 0;
+  min-height: 174px;
+  margin: 0 !important;
+  padding: 28px 24px !important;
+  overflow: hidden;
+  border: 1px solid rgba(38, 53, 47, .16) !important;
+  border-radius: 4px;
+  background: #fbf8f0 !important;
+  box-shadow: 0 10px 28px rgba(38, 53, 47, .045);
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+
+section.profile-expertise ol.profile-expertise-grid > li.profile-expertise-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--gold, #a8895d);
+}
+
+section.profile-expertise ol.profile-expertise-grid > li.profile-expertise-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(168, 137, 93, .6) !important;
+  box-shadow: 0 16px 34px rgba(38, 53, 47, .085);
+}
+
+section.profile-expertise ol.profile-expertise-grid > li.profile-expertise-card--education {
+  background: #f5f0e6 !important;
+}
+
+section.profile-expertise .profile-expertise-number {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin: 0;
+  border: 1px solid rgba(168, 137, 93, .45);
+  background: rgba(168, 137, 93, .12);
+  color: var(--gold, #a8895d);
+  font-size: 11px;
+  line-height: 1;
+}
+
+section.profile-expertise .profile-expertise-copy {
+  display: block;
+  min-width: 0;
+  padding: 1px 0 0;
+}
+
+section.profile-expertise .profile-expertise-category {
+  display: block;
+  margin: 0 0 10px;
+  color: var(--gold, #a8895d);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+section.profile-expertise .profile-expertise-copy h3 {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: clamp(15px, 1.25vw, 17px);
+  font-weight: 400;
+  line-height: 1.95;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+  section.profile-expertise ol.profile-expertise-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 13px !important;
+  }
+
+  section.profile-expertise ol.profile-expertise-grid > li.profile-expertise-card {
+    min-height: 0;
+    padding: 22px 18px !important;
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  section.profile-expertise .profile-expertise-number {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  section.profile-expertise ol.profile-expertise-grid > li.profile-expertise-card {
+    transition: none;
+  }
+}
