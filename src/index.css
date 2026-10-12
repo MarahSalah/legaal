@@ -3071,7 +3071,7 @@ section.profile-expertise .profile-expertise-copy h3 {
 
   .hero-document {
     position: absolute;
-    inset: 0;
+    inset: 8px 0 auto;
     height: 340px;
   }
 
