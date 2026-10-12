@@ -1344,6 +1344,8 @@ body { background: #f8f5ee; }
 .admin-content-table article > div { display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
 .admin-content-table article > div a, .admin-content-table article > div button { min-height: 31px; padding: 0 10px; border: 1px solid var(--line); background: transparent; display: inline-flex; align-items: center; gap: 6px; font-size: 8px; cursor: pointer; transition: background .25s ease, color .25s ease; }
 .admin-content-table article > div a:hover, .admin-content-table article > div button:hover { background: var(--olive); color: var(--ivory); }
+.admin-content-table article > div .admin-edit-action { border-color: var(--olive); color: var(--olive); font-weight: 600; }
+.admin-content-table article > div .admin-edit-action:hover { background: var(--olive); color: var(--ivory); }
 .admin-content-table article > div .danger { color: #804d42; }
 
 /* Persistent WhatsApp access */
