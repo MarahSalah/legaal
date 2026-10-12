@@ -3037,29 +3037,45 @@ section.profile-expertise .profile-expertise-copy h3 {
 
 
 
-/* Mobile hero: place the visual before the copy so its hidden intro
-   does not reserve a large blank green area above the dossier. */
+/* Final mobile hero correction: remove inherited top padding that
+   pushes the dossier down; keep the copy after the visual. */
 @media (max-width: 520px) {
+  .hero {
+    min-height: 0;
+    padding-block: 0;
+  }
+
   .hero-grid {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 0;
+    min-height: 0;
+    padding-block: 0;
   }
 
   .hero-visual-wrap {
     order: 0;
+    flex: 0 0 340px;
     width: 100%;
     height: 340px;
-    margin-top: 0;
+    margin: 0;
+    position: relative;
   }
 
   .hero-content {
     order: 1;
-    padding-top: 0;
+    width: 100%;
+    padding: 28px 0 32px;
   }
 
   .hero-document {
-    inset: 12px 0 auto;
+    position: absolute;
+    inset: 0;
     height: 340px;
+  }
+
+  .hero-reveal-image {
+    inset: 12px 0 0;
   }
 }
