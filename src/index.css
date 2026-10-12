@@ -2727,3 +2727,145 @@ section.profile-expertise .profile-expertise-copy h3 {
     transition: none;
   }
 }
+
+
+
+/* Editorial banner between lawyer introduction and profile details */
+.profile-banner {
+  position: relative;
+  padding: 0 0 10px;
+  background: #f7f4ed;
+}
+
+.profile-banner .container {
+  position: relative;
+}
+
+.profile-banner-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 26px;
+  min-height: 190px;
+  padding: 36px 42px;
+  overflow: hidden;
+  color: #f7f4ed;
+  background: #26352f;
+  border-radius: 4px;
+  isolation: isolate;
+}
+
+.profile-banner-inner::before,
+.profile-banner-inner::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.profile-banner-inner::before {
+  inset: 0 0 0 auto;
+  width: 34%;
+  background: linear-gradient(135deg, transparent 0 46%, rgba(168, 137, 93, .12) 46% 47%, transparent 47% 55%, rgba(168, 137, 93, .09) 55% 56%, transparent 56%);
+}
+
+.profile-banner-inner::after {
+  top: -110px;
+  left: -55px;
+  width: 260px;
+  height: 260px;
+  border: 1px solid rgba(220, 197, 158, .22);
+  border-radius: 50%;
+  box-shadow: 0 0 0 24px rgba(220, 197, 158, .035), 0 0 0 48px rgba(220, 197, 158, .025);
+}
+
+.profile-banner-mark {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  border: 1px solid rgba(220, 197, 158, .6);
+  color: #d7bd91;
+  font-family: Georgia, serif;
+  font-size: 40px;
+  line-height: 1;
+}
+
+.profile-banner-copy {
+  min-width: 0;
+}
+
+.profile-banner-kicker {
+  display: block;
+  margin-bottom: 11px;
+  color: #d7bd91;
+  font-size: 11px;
+  letter-spacing: .08em;
+  line-height: 1.8;
+}
+
+.profile-banner-copy h2 {
+  margin: 0;
+  color: #fbf8f0;
+  font-size: clamp(22px, 2.3vw, 32px);
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.profile-banner-copy p {
+  max-width: 620px;
+  margin: 9px 0 0;
+  color: rgba(251, 248, 240, .75);
+  font-size: 13px;
+  line-height: 2;
+}
+
+.profile-banner-index {
+  align-self: end;
+  color: rgba(215, 189, 145, .55);
+  font-family: Georgia, serif;
+  font-size: clamp(48px, 6vw, 78px);
+  line-height: .9;
+}
+
+.profile-banner--layla .profile-banner-mark {
+  border-radius: 50%;
+}
+
+@media (max-width: 700px) {
+  .profile-banner {
+    padding-bottom: 0;
+  }
+
+  .profile-banner-inner {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 16px;
+    min-height: 0;
+    padding: 27px 22px;
+  }
+
+  .profile-banner-mark {
+    width: 46px;
+    height: 46px;
+    font-size: 30px;
+  }
+
+  .profile-banner-copy h2 {
+    font-size: 21px;
+    line-height: 1.7;
+  }
+
+  .profile-banner-copy p {
+    font-size: 12px;
+    line-height: 1.9;
+  }
+
+  .profile-banner-index {
+    position: absolute;
+    left: 18px;
+    bottom: 12px;
+    font-size: 35px;
+    opacity: .6;
+  }
+}
