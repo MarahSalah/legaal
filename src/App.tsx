@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, ReactNode, useEffect, useState } from "react";
-import { createPublishedContent, deletePublishedContent, getPublishedContent, listPublishedContent, type PublishedContent } from "./contentApi";
+import { ChangeEvent, FormEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { createPublishedContent, deletePublishedContent, getPublishedContent, listPublishedContent, updatePublishedContent, type PublishedContent } from "./contentApi";
 
 type Service = { slug: string; title: string; description: string };
 
@@ -1585,7 +1585,7 @@ function PublishedDetail({ id, type, go }: { id: string; type: "blog" | "law"; g
     <Breadcrumb items={[["الرئيسية", "/"], [parentLabel, parentPath], [item.title, ""]]} go={go} />
     <h1>{item.title}</h1><time>{formatDate(item.date)}</time><div className="detail-rule"></div>
     {item.images.length > 0 && <div className="published-gallery">{item.images.map((image, index) => <img key={`${item.id}-${index}`} src={image} alt={`${item.title} — صورة ${index + 1}`} />)}</div>}
-    <article className="published-copy">{item.content}</article>
+    <article className="published-copy" dangerouslySetInnerHTML={{ __html: sanitizeRichTextHtml(item.content) }} />
     <ShareControls /><Link to={parentPath} go={go} className="back-link"><Arrow /> العودة إلى {parentLabel}</Link>
   </div></section>;
 }
@@ -1668,11 +1668,75 @@ function compressImage(file: File) {
   });
 }
 
+
+function RichTextEditor({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const savedSelection = useRef<Range | null>(null);
+  useEffect(() => { if (editorRef.current && editorRef.current.innerHTML !== value) editorRef.current.innerHTML = value; }, [value]);
+  const rememberSelection = () => {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0 && editorRef.current?.contains(selection.anchorNode)) savedSelection.current = selection.getRangeAt(0).cloneRange();
+  };
+  const restoreSelection = () => {
+    const selection = window.getSelection();
+    if (selection && savedSelection.current) { selection.removeAllRanges(); selection.addRange(savedSelection.current); }
+    editorRef.current?.focus();
+  };
+  const command = (name: string, argument?: string) => {
+    restoreSelection(); document.execCommand(name, false, argument);
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
+    rememberSelection();
+  };
+  const button = (label: string, title: string, action: () => void) => <button type="button" className="rich-toolbar-button" aria-label={title} title={title} onMouseDown={(event) => event.preventDefault()} onClick={action}>{label}</button>;
+  return <div className="rich-editor" dir="rtl">
+    <div className="rich-toolbar" role="toolbar" aria-label="أدوات تنسيق المحتوى">
+      <label className="rich-toolbar-select" title="نوع الخط"><span>الخط</span><select defaultValue="Arial" onMouseDown={rememberSelection} onChange={(event) => command("fontName", event.target.value)}><option value="Arial">Arial</option><option value="Tahoma">Tahoma</option><option value="Georgia">Georgia</option><option value="Times New Roman">Times New Roman</option><option value="Verdana">Verdana</option></select></label>
+      <label className="rich-toolbar-select" title="حجم الخط"><span>الحجم</span><select defaultValue="3" onMouseDown={rememberSelection} onChange={(event) => command("fontSize", event.target.value)}><option value="2">صغير</option><option value="3">عادي</option><option value="4">كبير</option><option value="5">أكبر</option><option value="6">كبير جدًا</option></select></label>
+      
+      {button("B", "عريض", () => command("bold"))}{button("I", "مائل", () => command("italic"))}{button("U", "تحته خط", () => command("underline"))}{button("S", "يتوسطه خط", () => command("strikeThrough"))}
+      <label className="rich-color" title="لون النص"><span>A</span><input aria-label="لون النص" type="color" defaultValue="#34312e" onMouseDown={rememberSelection} onChange={(event) => command("foreColor", event.target.value)} /></label>
+      <label className="rich-color rich-highlight" title="لون خلفية النص"><span>▰</span><input aria-label="لون خلفية النص" type="color" defaultValue="#fff0a8" onMouseDown={rememberSelection} onChange={(event) => command("hiliteColor", event.target.value)} /></label>
+      <label className="rich-toolbar-select" title="تنسيق الفقرة"><span>العناوين</span><select defaultValue="P" onMouseDown={rememberSelection} onChange={(event) => command("formatBlock", event.target.value)}><option value="P">فقرة</option><option value="H1">عنوان رئيسي</option><option value="H2">عنوان فرعي</option><option value="H3">عنوان صغير</option><option value="BLOCKQUOTE">اقتباس</option></select></label>
+      {button("يمين", "محاذاة لليمين", () => command("justifyRight"))}{button("وسط", "محاذاة للوسط", () => command("justifyCenter"))}{button("يسار", "محاذاة لليسار", () => command("justifyLeft"))}
+      {button("• قائمة", "قائمة نقطية", () => command("insertUnorderedList"))}{button("1. قائمة", "قائمة مرقمة", () => command("insertOrderedList"))}
+      {button("رابط", "إضافة رابط", () => { const url = window.prompt("أدخل الرابط"); if (url) command("createLink", url); })}
+      {button("↶", "تراجع", () => command("undo"))}{button("↷", "إعادة", () => command("redo"))}{button("مسح التنسيق", "إزالة التنسيق عن النص المحدد", () => command("removeFormat"))}
+    </div>
+    <div ref={editorRef} className="rich-editor-surface" contentEditable suppressContentEditableWarning role="textbox" aria-label="محتوى المقال أو القانون" aria-multiline="true" data-placeholder="اكتب المقال أو نص القانون هنا، وحدد أي جزء لتنسيقه..." onInput={(event) => onChange(event.currentTarget.innerHTML)} onKeyUp={rememberSelection} onMouseUp={rememberSelection} />
+    <div className="rich-editor-footer"><span>يدعم العربية والإنجليزية والتنسيق داخل النص</span><span>{value.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").trim().length} حرفًا تقريبًا</span></div>
+  </div>;
+}
+
+function sanitizeRichTextHtml(html: string) {
+  const parsed = new DOMParser().parseFromString(html, "text/html");
+  const allowedTags = new Set(["P", "DIV", "BR", "STRONG", "B", "EM", "I", "U", "S", "H1", "H2", "H3", "H4", "UL", "OL", "LI", "BLOCKQUOTE", "A", "SPAN", "FONT"]);
+  const allowedStyles = new Set(["color", "background-color", "font-size", "font-family", "text-align", "direction"]);
+  const clean = (node: Node) => Array.from(node.childNodes).forEach((child) => {
+    if (child.nodeType === Node.ELEMENT_NODE) {
+      const element = child as HTMLElement;
+      if (!allowedTags.has(element.tagName)) { element.replaceWith(...Array.from(element.childNodes)); return; }
+      Array.from(element.attributes).forEach((attribute) => {
+        if (attribute.name === "style") {
+          const safe = Array.from(element.style).filter((property) => allowedStyles.has(property)).map((property) => `${property}: ${element.style.getPropertyValue(property)}`).join("; ");
+          if (safe) element.setAttribute("style", safe); else element.removeAttribute("style");
+        } else if (element.tagName === "A" && attribute.name === "href") {
+          if (!/^(https?:|mailto:|tel:)/i.test(attribute.value)) element.removeAttribute("href");
+        } else if (!(element.tagName === "A" && ["target", "rel"].includes(attribute.name))) element.removeAttribute(attribute.name);
+      });
+      if (element.tagName === "A" && element.hasAttribute("href")) { element.setAttribute("rel", "noopener noreferrer"); element.setAttribute("target", "_blank"); }
+      clean(element);
+    } else if (child.nodeType !== Node.TEXT_NODE) child.remove();
+  });
+  clean(parsed.body);
+  return parsed.body.innerHTML;
+}
+
 function Admin({ go }: { go: (to: string) => void }) {
   const [type, setType] = useState<"blog" | "law">("blog");
   const [toast, setToast] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [images, setImages] = useState<string[]>([]);
   const [items, setItems] = useState<PublishedContent[]>([]);
   const [processingImages, setProcessingImages] = useState(false);
@@ -1698,18 +1762,17 @@ function Admin({ go }: { go: (to: string) => void }) {
     event.preventDefault();
     setPublishing(true);
     try {
-      const nextItem = await createPublishedContent({
-        type,
-        title: title.trim(),
-        content: content.trim(),
-        date: new Date().toISOString().slice(0, 10),
-        images,
-      });
-      setItems((current) => [nextItem, ...current]);
-      setTitle("");
-      setContent("");
-      setImages([]);
-      setToast(type === "blog" ? "تم نشر المقال في المدونة" : "تم نشر القانون في صفحة القوانين");
+      const draft = { type, title: title.trim(), content: content.trim(), date: editingId ? (items.find((item) => item.id === editingId)?.date || new Date().toISOString().slice(0, 10)) : new Date().toISOString().slice(0, 10), images } as const;
+      if (editingId) {
+        const updated = await updatePublishedContent(editingId, draft);
+        setItems((current) => current.map((item) => item.id === editingId ? updated : item));
+        setToast("تم حفظ تعديلات المحتوى");
+      } else {
+        const nextItem = await createPublishedContent(draft);
+        setItems((current) => [nextItem, ...current]);
+        setToast(type === "blog" ? "تم نشر المقال في المدونة" : "تم نشر القانون في صفحة القوانين");
+      }
+      setTitle(""); setContent(""); setImages([]); setEditingId(null);
     } catch {
       setToast("تعذر النشر. تحقق من اتصال الباك إند وحاول مجددًا.");
     } finally {
@@ -1726,6 +1789,8 @@ function Admin({ go }: { go: (to: string) => void }) {
       window.setTimeout(() => setToast(""), 3000);
     }
   };
+  const editItem = (item: PublishedContent) => { setEditingId(item.id); setType(item.type); setTitle(item.title); setContent(item.content); setImages(item.images || []); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const cancelEdit = () => { setEditingId(null); setTitle(""); setContent(""); setImages([]); };
   const shareItem = async (item: PublishedContent) => {
     const path = item.type === "blog" ? `/blog/published/${item.id}` : `/laws/published/${item.id}`;
     const url = new URL(path, window.location.origin).toString();
@@ -1744,19 +1809,19 @@ function Admin({ go }: { go: (to: string) => void }) {
     <main className="admin-main"><header><div><span>مساحة الإدارة</span><h1>إنشاء محتوى</h1><p>أنشئ مقالًا أو قانونًا، أضف الصور ثم انشره مباشرة في القسم المختار.</p></div><Link to="/" go={go} className="admin-return">العودة للموقع <Arrow /></Link></header>
       <div className="admin-dashboard">
         <form className="admin-editor" onSubmit={publish}>
-          <div className="admin-editor-heading"><div className="admin-step">01</div><div><h2>محتوى جديد</h2><p>حدد القسم واكتب المحتوى الذي تريد نشره.</p></div></div>
+          <div className="admin-editor-heading"><div className="admin-step">{editingId ? "02" : "01"}</div><div><h2>{editingId ? "تعديل المحتوى" : "محتوى جديد"}</h2><p>حدد القسم واكتب المحتوى الذي تريد نشره.</p></div></div>
           <fieldset className="content-type"><legend>مكان النشر</legend><button type="button" className={type === "blog" ? "selected" : ""} onClick={() => setType("blog")}><Icon name="document" size={21} /><span><b>المدونة</b><small>مقال أو خبر قانوني</small></span></button><button type="button" className={type === "law" ? "selected" : ""} onClick={() => setType("law")}><Icon name="building" size={21} /><span><b>القوانين</b><small>قانون أو مرجع تشريعي</small></span></button></fieldset>
           <Input label="عنوان المحتوى" value={title} onChange={setTitle} />
-          <label className="input admin-content-field"><span>المحتوى</span><textarea required value={content} onChange={(event) => setContent(event.target.value)} placeholder="اكتب المقال أو القانون هنا..." /></label>
+          <label className="input admin-content-field"><span>المحتوى</span></label><RichTextEditor key={editingId || "new-content"} value={content} onChange={setContent} />
           <label className="admin-upload"><input type="file" accept="image/*" multiple onChange={handleImages} /><span className="admin-upload-icon">+</span><strong>{processingImages ? "جاري تجهيز الصور..." : "أضف صورًا للمحتوى"}</strong><small>يمكن اختيار عدة صور وإضافة المزيد لاحقًا</small></label>
           {images.length > 0 && <div className="admin-image-preview">{images.map((image, index) => <div key={`${image.slice(-20)}-${index}`}><img src={image} alt={`معاينة ${index + 1}`} /><button type="button" aria-label={`حذف الصورة ${index + 1}`} onClick={() => setImages((current) => current.filter((_, imageIndex) => imageIndex !== index))}>×</button></div>)}</div>}
-          <button className="button admin-publish" type="submit" disabled={processingImages || publishing}>{publishing ? "جاري النشر..." : `نشر في ${type === "blog" ? "المدونة" : "القوانين"}`} {!publishing && <Arrow />}</button>
+          <div className="admin-form-actions"><button className="button admin-publish" type="submit" disabled={processingImages || publishing}>{publishing ? "جاري الحفظ..." : editingId ? "حفظ التعديلات" : `نشر في ${type === "blog" ? "المدونة" : "القوانين"}`} {!publishing && <Arrow />}</button>{editingId && <button className="admin-cancel-edit" type="button" onClick={cancelEdit}>إلغاء التعديل</button>}</div>
         </form>
         <section className="admin-library">
           <div className="admin-library-heading"><span>{String(items.length).padStart(2, "0")}</span><div><h2>المحتوى المنشور</h2><p>إدارة المقالات والقوانين التي تمت إضافتها.</p></div></div>
           {items.length === 0 ? <div className="admin-empty"><Icon name="document" size={30} /><p>لا يوجد محتوى منشور بعد.</p></div> : <div className="admin-content-table"><div className="admin-table-head"><span>النوع</span><span>العنوان</span><span>التاريخ</span><span>الإجراءات</span></div>{items.map((item) => {
             const path = item.type === "blog" ? `/blog/published/${item.id}` : `/laws/published/${item.id}`;
-            return <article key={item.id}><span className={`content-badge ${item.type}`}>{item.type === "blog" ? "مدونة" : "قانون"}</span><h3>{item.title}</h3><time>{formatDate(item.date)}</time><div><Link to={path} go={go}>عرض</Link><button type="button" onClick={() => shareItem(item)}><Icon name="share" size={14} />مشاركة</button><button className="danger" type="button" onClick={() => removeItem(item.id)}>حذف</button></div></article>;
+            return <article key={item.id}><span className={`content-badge ${item.type}`}>{item.type === "blog" ? "مدونة" : "قانون"}</span><h3>{item.title}</h3><time>{formatDate(item.date)}</time><div><Link to={path} go={go}>عرض</Link><button type="button" onClick={() => editItem(item)}>تعديل</button><button type="button" onClick={() => shareItem(item)}><Icon name="share" size={14} />مشاركة</button><button className="danger" type="button" onClick={() => removeItem(item.id)}>حذف</button></div></article>;
           })}</div>}
         </section>
       </div>
