@@ -2869,3 +2869,40 @@ section.profile-expertise .profile-expertise-copy h3 {
     opacity: .6;
   }
 }
+
+
+/* Rich text editor for articles and laws */
+.rich-editor { margin: 8px 0 20px; border: 1px solid var(--line); background: #fffdf8; min-width: 0; }
+.rich-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px; border-bottom: 1px solid var(--line); background: #f4f0e8; }
+.rich-toolbar-button, .rich-toolbar-select, .rich-color { min-height: 34px; border: 1px solid #ded6c8; background: #fffdf8; color: var(--olive); display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 8px; font: inherit; font-size: 11px; }
+.rich-toolbar-button { cursor: pointer; }
+.rich-toolbar-button:hover, .rich-toolbar-button:focus-visible { background: var(--olive); color: #fffdf8; }
+.rich-toolbar-select { padding: 0 6px; }
+.rich-toolbar-select span { color: var(--olive-3); white-space: nowrap; }
+.rich-toolbar-select select { max-width: 110px; border: 0; outline: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.rich-color { position: relative; width: 38px; padding: 3px; cursor: pointer; font-weight: 700; }
+.rich-color input { width: 22px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.rich-highlight { color: #7a6423; }
+.rich-editor-surface { min-height: 300px; max-height: 65vh; overflow: auto; padding: 22px; outline: 0; color: #34312e; font-family: Arial, Tahoma, sans-serif; font-size: 15px; line-height: 2; text-align: right; direction: rtl; overflow-wrap: anywhere; }
+.rich-editor-surface:empty::before { content: attr(data-placeholder); color: #aaa397; pointer-events: none; }
+.rich-editor-surface h1 { font-size: 1.8em; line-height: 1.5; }
+.rich-editor-surface h2 { font-size: 1.5em; line-height: 1.6; }
+.rich-editor-surface h3 { font-size: 1.25em; line-height: 1.7; }
+.rich-editor-surface blockquote { margin: 18px 0; padding: 10px 18px; border-right: 3px solid var(--gold); background: #f5efe5; }
+.rich-editor-footer { display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border-top: 1px solid var(--line); color: var(--olive-3); font-size: 10px; }
+.admin-form-actions { display: grid; gap: 8px; }
+.admin-cancel-edit { min-height: 42px; border: 1px solid var(--line); background: transparent; color: var(--olive); cursor: pointer; }
+.published-copy h1, .published-copy h2, .published-copy h3 { color: var(--olive); line-height: 1.7; }
+.published-copy h1 { font-size: 1.8em; }
+.published-copy h2 { font-size: 1.5em; }
+.published-copy h3 { font-size: 1.25em; }
+.published-copy ul, .published-copy ol { padding-inline-start: 1.6em; }
+.published-copy blockquote { margin: 24px 0; padding: 14px 20px; border-right: 3px solid var(--gold); background: #f5efe5; }
+.published-copy a { color: var(--olive); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 700px) {
+  .rich-toolbar { gap: 5px; padding: 8px; }
+  .rich-toolbar-select { max-width: 100%; }
+  .rich-toolbar-select select { max-width: 84px; }
+  .rich-editor-surface { min-height: 260px; padding: 15px; font-size: 14px; }
+  .rich-editor-footer { flex-direction: column; }
+}
