@@ -1715,6 +1715,14 @@ function sanitizeRichTextHtml(html: string) {
     if (child.nodeType === Node.ELEMENT_NODE) {
       const element = child as HTMLElement;
       if (!allowedTags.has(element.tagName)) { element.replaceWith(...Array.from(element.childNodes)); return; }
+      if (element.tagName === "FONT") {
+        const legacyColor = element.getAttribute("color");
+        const legacyFace = element.getAttribute("face");
+        const legacySize = element.getAttribute("size");
+        if (legacyColor) element.style.color = legacyColor;
+        if (legacyFace) element.style.fontFamily = legacyFace;
+        if (legacySize) element.style.fontSize = ({"1":"10px","2":"13px","3":"16px","4":"18px","5":"24px","6":"32px","7":"48px"} as Record<string, string>)[legacySize] || "16px";
+      }
       Array.from(element.attributes).forEach((attribute) => {
         if (attribute.name === "style") {
           const safe = Array.from(element.style).filter((property) => allowedStyles.has(property)).map((property) => `${property}: ${element.style.getPropertyValue(property)}`).join("; ");
