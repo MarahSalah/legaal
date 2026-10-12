@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { createPublishedContent, deletePublishedContent, getPublishedContent, listPublishedContent, type PublishedContent } from "./contentApi";
 
 type Service = { slug: string; title: string; description: string };
@@ -1577,7 +1577,7 @@ function PublishedDetail({ id, type, go }: { id: string; type: "blog" | "law"; g
     <Breadcrumb items={[["الرئيسية", "/"], [parentLabel, parentPath], [item.title, ""]]} go={go} />
     <h1>{item.title}</h1><time>{formatDate(item.date)}</time><div className="detail-rule"></div>
     {item.images.length > 0 && <div className="published-gallery">{item.images.map((image, index) => <img key={`${item.id}-${index}`} src={image} alt={`${item.title} — صورة ${index + 1}`} />)}</div>}
-    <article className="published-copy">{/<(?:p|h[1-6]|ul|ol|li|strong|em|span|div|a|blockquote|br|table)\\b/i.test(item.content) ? <div dangerouslySetInnerHTML={{ __html: item.content }} /> : item.content}</article>
+    <article className="published-copy">{/<(?:p|h[1-6]|ul|ol|li|strong|em|span|div|a|blockquote|br|table)\b/i.test(item.content) ? <div dangerouslySetInnerHTML={{ __html: item.content }} /> : item.content}</article>
     <ShareControls /><Link to={parentPath} go={go} className="back-link"><Arrow /> العودة إلى {parentLabel}</Link>
   </div></section>;
 }
@@ -1667,7 +1667,7 @@ function RichTextEditor({ value, onChange }: { value: string; onChange: (value: 
     document.execCommand(command, false, commandValue);
     if (editorRef.current) onChange(editorRef.current.innerHTML);
   };
-  const keepEditorFocus = (event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault();
+  const keepEditorFocus = (event: MouseEvent<HTMLButtonElement>) => event.preventDefault();
   useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== value) editorRef.current.innerHTML = value;
   }, [value]);
