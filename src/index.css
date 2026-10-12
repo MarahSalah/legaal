@@ -3035,3 +3035,17 @@ section.profile-expertise .profile-expertise-copy h3 {
   .media-interview-placeholder span { width: 48px; height: 48px; }
 }
 
+
+
+/* Mobile hero: keep the content and revealed photograph visible from the first frame.
+   Preserve the original document and gavel animation timing on desktop and tablet. */
+@media (max-width: 800px) {
+  .hero-content {
+    opacity: 1;
+    animation: none;
+  }
+
+  .hero-reveal-image {
+    animation-delay: 0s;
+  }
+}
