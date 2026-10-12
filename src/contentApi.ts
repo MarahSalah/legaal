@@ -84,6 +84,25 @@ export async function createPublishedContent(draft: ContentDraft) {
   return item;
 }
 
+export async function updatePublishedContent(id: string, draft: ContentDraft) {
+  if (apiBase) {
+    const formData = new FormData();
+    formData.append("type", draft.type); formData.append("title", draft.title);
+    formData.append("content", draft.content); formData.append("date", draft.date);
+    for (const [index, image] of draft.images.entries()) {
+      const blob = await fetch(image).then((response) => response.blob());
+      formData.append("images", blob, `content-image-${index + 1}.jpg`);
+    }
+    const response = await fetch(`${apiBase}/content/${encodeURIComponent(id)}`, { method: "PUT", body: formData, credentials: "include" });
+    if (!response.ok) throw new Error("Unable to update content");
+    return await response.json() as PublishedContent;
+  }
+  const items = readLocalContent();
+  const updated: PublishedContent = { ...draft, id };
+  writeLocalContent(items.map((item) => item.id === id ? updated : item));
+  return updated;
+}
+
 export async function deletePublishedContent(id: string) {
   if (apiBase) {
     const response = await fetch(`${apiBase}/content/${encodeURIComponent(id)}`, {

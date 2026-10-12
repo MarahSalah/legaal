@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, ReactNode, useEffect, useState } from "react";
-import { createPublishedContent, deletePublishedContent, getPublishedContent, listPublishedContent, type PublishedContent } from "./contentApi";
+import { ChangeEvent, FormEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { createPublishedContent, deletePublishedContent, getPublishedContent, listPublishedContent, updatePublishedContent, type PublishedContent } from "./contentApi";
 
 type Service = { slug: string; title: string; description: string };
 
@@ -19,8 +19,10 @@ const homeServices = [
 const services: Service[] = [
   { slug: "companies", title: "محامي شركات في الأردن", description: "نساعد في تأسيس الشركات وتسجيلها واختيار الشكل القانوني المناسب، وإعداد ومراجعة عقد التأسيس والنظام الأساسي واتفاقيات المساهمين والشراكة والتوريد والوكالات التجارية والاستثمار والتمويل واتفاقيات السرية وعقود العمل. كما نتابع تعديلات رأس المال ودخول الشركاء وخروجهم، ونقدم الاستشارات والتمثيل القانوني أمام الجهات المختصة والمحاكم وهيئات التحكيم." },
   { slug: "labor", title: "محامين قضايا عمالية في عمّان", description: "نقدم الدعم القانوني لأصحاب العمل والعمال في نزاعات الأجور والفصل وإنهاء الخدمة والإجازات وساعات العمل وإصابات العمل، إلى جانب مراجعة عقود العمل والأنظمة الداخلية والتسويات وتمثيل الأطراف وفق القانون الأردني." },
-  { slug: "insolvency", title: "محامي إعسار في عمان", description: "نرافق الشركات والمنشآت التي تواجه تعثراً مالياً لحمايتها من التصفية الجبرية، وتطبيق حلول إعادة الهيكلة وجدولة الديون وفقاً لقانون الإعسار الأردني." },
+  { slug: "rent-disputes", title: "محامي قضايا أجور وإخلاء مأجور", description: "نتابع نزاعات عقود الإيجار السكنية والتجارية، ودعاوى إخلاء المأجور وتحصيل الأجور المتأخرة والتعويض عن الأضرار، إلى جانب صياغة ومراجعة عقود الإيجار وفق القانون الأردني." },
   { slug: "cybercrime", title: "محامي جرائم إلكترونية في الأردن", description: "نتابع قضايا الابتزاز والتهديد الإلكتروني، واختراق الحسابات والأنظمة، والاحتيال المالي الرقمي، والذم والقدح عبر الإنترنت. تشمل المتابعة حفظ الأدلة الرقمية ومراجعة المستندات وتوضيح الإجراءات الممكنة مع مراعاة سرية المعلومات." },
+  { slug: "compensation", title: "محامي قضايا تعويض في الأردن", description: "نتابع دعاوى التعويض عن الأضرار المادية والمعنوية، والأخطاء الطبية والجرائم والإخلال بالعقود، مع العمل على إثبات الضرر وعلاقة السببية والمطالبة بالتعويض المستحق." },
+  { slug: "insurance", title: "محامي قضايا تأمين في الأردن", description: "نتابع مطالبات التأمين عن حوادث المركبات والإصابات والأضرار المادية، ونعالج نزاعات رفض التغطية ومماطلة شركات التأمين ومطالبات التأمين الطبي والحياة والممتلكات." },
   { slug: "criminal", title: "محامي قضايا جزائية في الأردن", description: "تمثيل قانوني صارم ودفاع استراتيجي في كافة القضايا الجنائية والجنحوية، والدفاع عن الحقوق الشخصية واستردادها أمام المحاكم المختصة لحماية حريتك وسمعتك" },
 ];
 
@@ -46,7 +48,6 @@ const blogTitles = [
   "عقود العمل عن بعد وطرق حماية الشركات لأسرارها وملكيتها الفكرية",
   "شرط التحكيم كوسيلة بديلة لحل النزاعات",
   "الأركان القانونية لترخيص المتاجر الإلكترونية وحماية البيانات في الأردن لعام 2026",
-  "آليات قانون الإعسار الأردني: طوق النجاة لإعادة هيكلة الشركات وحمايتها من الإفلاس",
   "دليل الاستثمار الأجنبي في الأردن لعام 2026: الشروط، الحوافز، والقيود القطاعية",
   "الامتثال والنزاعات الضريبية للشركات في الأردن وكيفية تجنب الغرامات الفورية",
   "دليل حوكمة الشركات في الأردن: تنظيم الصلاحيات والامتثال القانوني",
@@ -78,7 +79,7 @@ const blogDates = [
   "2026-08-12", "2026-08-12", "2026-08-11", "2026-08-11", "2026-08-11", "2026-07-27",
   "2026-07-26", "2026-07-26", "2026-07-19", "2026-07-19", "2026-07-19", "2026-07-18",
   "2026-07-13", "2026-07-04", "2026-07-02", "2026-07-01", "2026-07-01", "2026-07-01",
-  "2026-07-01", "2026-06-29", "2026-06-27", "2026-06-27", "2026-06-07", "2026-06-07",
+ "2026-06-29", "2026-06-27", "2026-06-27", "2026-06-07", "2026-06-07",
   "2026-05-21", "2026-05-21", "2026-05-21", "2026-05-18", "2026-02-16", "2026-01-19",
   "2026-01-19", "2026-01-14", "2026-01-14", "2026-01-14", "2026-01-10", "2025-10-29",
   "2025-10-14", "2025-10-07", "2025-10-07", "2025-10-07",
@@ -184,7 +185,7 @@ function Navbar({ path, go }: { path: string; go: (to: string) => void }) {
         </button>
       </div>
       <div className={`mobile-nav ${open ? "open" : ""}`}>
-        {nav.map(([to, label], index) => <Link key={to} to={to} go={go} onClick={() => setOpen(false)}><small>{String(index + 1).padStart(2, "0")}</small>{label}</Link>)}
+        {nav.map(([to, label], index) => <Link key={to} to={to} go={go} onClick={() => setOpen(false)}><small>{String(index === 4 ? services.length : index > 4 ? index : index + 1).padStart(2, "0")}</small>{label}</Link>)}
         <Button to="/contact" go={go} onClick={() => setOpen(false)}>احجز استشارة</Button>
       </div>
     </header>
@@ -267,27 +268,35 @@ function Hero({ go }: { go: (to: string) => void }) {
 }
 
 function PracticeIndex({ item, index, go }: { item: string[]; index: number; go: (to: string) => void }) {
-  const icons: IconName[] = ["shield", "work", "wallet", "document", "home", "building"];
+  const icons: IconName[] = ["shield", "work", "wallet", "document", "home", "building", "wallet"];
+  const servicePath: Record<string, string> = {
+    "قضايا الجرائم الإلكترونية": "/cyber-crime-lawyer-jordan",
+    "القضايا العمالية": "/labor-lawyers-amman",
+    "المطالبات المالية والديون": "/compensation-cases-jordan",
+    "قضايا التأمين": "/insurance-lawyer-jordan",
+    "العقارات والأجور": "/rent-disputes-jordan",
+    "قضايا الشركات": "/company-lawyer-jordan",
+  };
   return (
     <article className="practice-row">
       <div className="practice-card-top"><span className="practice-no">{String(index + 1).padStart(2, "0")}</span><Icon name={icons[index]} /></div>
       <div><h3>{item[0]}</h3><p>{item[1]}</p></div>
-      <Link to="/services" go={go} ariaLabel={`اكتشف المزيد عن ${item[0]}`}><Arrow /></Link>
+      <Link to={servicePath[item[0]] || "/services"} go={go} ariaLabel={`اكتشف المزيد عن ${item[0]}`}><Arrow /></Link>
     </article>
   );
 }
 
 function TeamCard({ person, index, go }: { person: "abdullah" | "layla"; index: number; go: (to: string) => void }) {
   const info = person === "abdullah"
-    ? { name: "المحامي عبدالله نواف الزبيدي", role: "شريك ومدير الشركة", exp: "مزاول للمهنة منذ عام 2014", letter: "ع" }
-    : { name: "المحامية ليلى خالد أبو الرُب", role: "شريكة ومحامية", exp: "أكثر من 10 سنوات من الخبرة", letter: "ل" };
+    ? { name: "المحامي عبدالله نواف الزبيدي", role: "شريك ومدير الشركة", exp: "مزاول للمهنة منذ عام 2014", letter: "ع", profile: "/lawyer-in-jordan" }
+    : { name: "المحامية ليلى خالد أبو الرُب", role: "شريكة ومحامية", exp: "أكثر من 10 سنوات من الخبرة", letter: "ل", profile: "/lawyer-leila-khaled" };
   return (
     <article className="team-card">
       <div className="team-visual">
         {person === "abdullah" ? <img src="/assets/abdullah.jpg" alt="المحامي عبدالله الزبيدي" /> : <span className="portrait-letter">{info.letter}</span>}
       </div>
       <div className="team-info"><h3>{info.name}</h3><p>{info.role}</p><span>{info.exp}</span>
-        <Link to={`/team/${person}`} go={go}>عرض الملف الكامل <Arrow /></Link>
+        <Link to={info.profile} go={go}>عرض الملف الكامل <Arrow /></Link>
       </div>
     </article>
   );
@@ -314,7 +323,7 @@ function Home({ go }: { go: (to: string) => void }) {
           <div className="about-copy">
             <p>مرحبًا بكم في شركة بيت الترافع لأعمال المحاماة والتحكيم في عمّان، بإدارة المحامي عبدالله نواف الزبيدي، الحاصل على بكالوريوس القانون من جامعة اليرموك عام 2010 وماجستير القانون التجاري عام 2013، والمزاول للمهنة منذ عام 2014.</p>
             <p>نقدم خدمات قانونية للأفراد والشركات في مجالات الشركات والقضايا التجارية والجرائم الإلكترونية والعمل والإيجارات والتعويضات، مع الحرص على متابعة الإجراءات وإطلاع العميل على مستجدات ملفه.</p>
-            <Button to="/about" go={go} secondary>تعرف علينا</Button>
+            <div className="about-actions"><Button to="/about" go={go} secondary>تعرف علينا</Button><Button to="/lawyer-in-amman" go={go}>محامي في عمان</Button></div>
           </div>
         </div>
       </section>
@@ -383,18 +392,6 @@ function LawyerInJordan({ go }: { go: (to: string) => void }) {
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 function CyberCrimeLawyerJordan({ go }: { go: (to: string) => void }) {
   return (
     <>
@@ -457,7 +454,7 @@ function CyberCrimeLawyerJordan({ go }: { go: (to: string) => void }) {
           <p className="lead">إذا كنت ضحية لعملية ابتزاز، أو تواجه تهمة رقمية معقدة، أو ترغب في تحصين منشأتك تجارياً وسيبرانياً، فإن فريق بيت الترافع لأعمال المحاماة والتحكيم مستعد لتقديم الحل القانوني الحاسم.</p>
           <p className="lead">📞 الهاتف: <a href="tel:+962798080228" dir="ltr">962798080228+</a></p>
           <p className="lead"><a href="tel:+962782343333" dir="ltr">962782343333+</a></p>
-          <p className="lead">📱 واتساب: whatsapp</p>
+          <p className="lead">📱 واتساب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a></p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead">📍 الموقع: عمان – خلدا - شارع الأميرة رحمة بنت الحسن - مجمع القدس التجاري مدخل أ - الطابق 1 - مكتب 102.</p>
           <p className="lead">لا تترك أثرك الرقمي دون حماية؛ احجز استشارتك التخصصية اليوم.</p>
@@ -467,8 +464,6 @@ function CyberCrimeLawyerJordan({ go }: { go: (to: string) => void }) {
     </>
   );
 }
-
-
 
 function CompanyLawyerJordan({ go }: { go: (to: string) => void }) {
   return (
@@ -793,7 +788,7 @@ function JordanianLawyersNumbers({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر: <a href="tel:+962798080228" dir="ltr">962798080228+</a></p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</p>
-          <p className="lead">واتس آب:</p>
+          <p className="lead">واتس آب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -863,8 +858,8 @@ function CriminalLawyerJordan({ go }: { go: (to: string) => void }) {
           <p className="lead">إذا كنت تواجه اتهاماً جزائياً، أو تعرضت لعملية احتيال أو إساءة أمانة وترغب في استرداد حقوقك وحماية سمعتك، فإن فريق بيت الترافع لأعمال المحاماة والتحكيم جاهز فوراً لتولي زمام المبادرة.</p>
           <p className="lead">📞 الهاتف: <a href="tel:+962782343333" dir="ltr">962782343333+</a></p>
           <p className="lead"><a href="tel:+962798080228" dir="ltr">962798080228+</a></p>
-          <p className="lead">📱 واتساب: <a href="https://api.whatsapp.com/send/?phone=962798080228&amp;text=%2A%D9%88%D8%B9%D9%84%D9%8A%D9%83%D9%85+%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85+%D9%88%D8%B1%D8%AD%D9%85%D8%A9+%D8%A7%D9%84%D9%84%D9%87+%D9%88%D8%A8%D8%B1%D9%83%D8%A7%D8%AA%D9%87%D8%8C+%D8%A3%D9%87%D9%84%D8%A7+%D8%A8%D9%83+%D9%81%D9%8A+%D9%85%D9%88%D9%82%D8%B9+%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D9%85%D9%8A+%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87+%D8%A7%D9%84%D8%B2%D8%A8%D9%8A%D8%AF%D9%8A%D8%8C+%D9%86%D8%B1%D8%AC%D9%88+%D9%83%D8%AA%D8%A7%D8%A8%D8%A9+%D8%A7%D9%84%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84+%D8%A7%D9%84%D8%B6%D8%B1%D9%88%D8%B1%D9%8A%D8%A9+%D8%AD%D9%88%D9%84+%D9%85%D9%88%D8%B6%D9%88%D8%B9%D9%83%D8%8C+%D9%88%D8%B3%D9%86%D9%82%D9%88%D9%85+%D8%A8%D8%A7%D9%84%D8%B1%D8%AF+%D8%B9%D9%84%D9%8A%D9%83+%D9%81%D9%8A+%D8%A7%D8%B3%D8%B1%D8%B9+%D9%88%D9%82%D8%AA+%D9%85%D9%85%D9%83%D9%86.%2A&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noreferrer">whatsapp</a></p>
-          <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyer abdullah960@gmail.com</a></p>
+          <p className="lead">📱 واتساب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">whatsapp</a></p>
+          <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead">📍 الموقع: <a href="https://maps.app.goo.gl/DdQr9daSYcbFSg5M7?g_st=ac" target="_blank" rel="noreferrer">عمان – شارع الأميرة رحمة بنت الحسن - مجمع القدس التجاري مدخل أ- طابق 1 - مكتب 102.</a></p>
           <p className="lead">الحرية والسمعة لا تحتملان تأجيل القرار؛ احجز استشارتك الجزائية الفورية اليوم.</p>
         </div>
@@ -913,7 +908,7 @@ function InsuranceLawyerJordan({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر: <a href="tel:+962798080228" dir="ltr">962798080228+</a></p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</p>
-          <p className="lead">واتس آب:</p>
+          <p className="lead">واتس آب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1057,7 +1052,7 @@ function JordanianLawyerNumber({ go }: { go: (to: string) => void }) {
           <p className="lead">962782343333+</p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a>.</p>
           <p className="lead">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</p>
-          <p className="lead">واتس آب:</p>
+          <p className="lead">واتس آب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1099,7 +1094,7 @@ function TrustedJordanianLawyerNumber({ go }: { go: (to: string) => void }) {
           <p className="lead">962782343333+</p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead"><a href="https://maps.app.goo.gl/5BJtcnnpKYoED7WTA?g_st=ac">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102)</a>.</p>
-          <p className="lead"><strong>واتس آب:</strong></p>
+          <p className="lead"><strong>واتس آب:</strong> <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1208,9 +1203,9 @@ function LeilaKhaledProfile({ go }: { go: (to: string) => void }) {
           <SectionHeader title="تواصل مع المحامية ليلى خالد" />
           <p className="lead">إذا كنت بحاجة إلى استشارة قانونية في قضايا العمل، أو التنفيذ، أو المطالبات المالية، أو متابعة الإجراءات القانونية، فإن المحامية ليلى خالد وفريق شركة بيت الترافع لأعمال المحاماة والتحكيم على استعداد لتقديم الدعم القانوني بما يتناسب مع طبيعة قضيتك واحتياجاتك.</p>
           <p className="lead">يمكنك التواصل معها مباشرة من خلال الاتصال على الهاتف التالي:</p>
-          <p className="lead">962782343333+</p>
+          <p className="lead"><a href="tel:+962782343333" dir="ltr">962782343333+</a></p>
           <p className="lead">أو من خلال واتس آب بالضغط على رابط واتساب الخاص بها:</p>
-          <p className="lead"><strong>تواصل واتساب</strong></p>
+          <p className="lead"><a href="https://wa.me/962782343333" target="_blank" rel="noreferrer"><strong>تواصل واتساب 962782343333+</strong></a></p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1260,7 +1255,7 @@ function CompensationCasesJordan({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر: 962798080228+</p>
           <p className="lead">📧 البريد الإلكتروني: <a href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a></p>
           <p className="lead"><a href="https://maps.app.goo.gl/DdQr9daSYcbFSg5M7?g_st=ac">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</a></p>
-          <p className="lead"><strong>واتس آب:</strong></p>
+          <p className="lead"><strong>واتس آب:</strong> <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1320,7 +1315,7 @@ function RentDisputesJordan({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر: 962798080228+</p>
           <p className="lead">📧 البريد الإلكتروني: lawyerabdullah960@gmail.com</p>
           <p className="lead">📍 الموقع: عمان – الأردن (خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102).</p>
-          <p className="lead">واتس آب:</p>
+          <p className="lead">واتس آب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1372,7 +1367,7 @@ function LawyerInAmman({ go }: { go: (to: string) => void }) {
           <p className="lead">📞 الهاتف المباشر:  962798080228+</p>
           <p className="lead">📧 البريد الإلكتروني: lawyerabdullah960@gmail.com</p>
           <p className="lead">📍 العنوان: عمان - خلدا - شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102.</p>
-          <p className="lead">whatsApp:</p>
+          <p className="lead">واتساب: <a href="https://wa.me/962798080228" target="_blank" rel="noreferrer">+962 79 808 0228</a> أو <a href="https://wa.me/962782343333" target="_blank" rel="noreferrer">+962 78 234 3333</a>.</p>
         </div>
       </section>
       <Consultation go={go} />
@@ -1391,7 +1386,7 @@ function About({ go }: { go: (to: string) => void }) {
       </div></section>
       <section className="about-support"><div className="container">
         <div className="about-support-visual"><img src="/assets/hero-legal.jpg" alt="معالجة مهنية لملف قانوني" /></div>
-        <div><p className="eyebrow">منهجية مهنية</p><h2>تحديث المعرفة القانونية والتقنية.</h2><p>في شركة بيت الترافع لأعمال المحاماة والتحكيم نحرص على تحديث معرفتنا بأحدث التطورات القانونية والتقنية لضمان تقديم خدمة أفضل لعملائنا.</p></div>
+        <div><p className="eyebrow">منهجية مهنية</p><h2>تحديث المعرفة القانونية والتقنية.</h2><p>في شركة بيت الترافع لأعمال المحاماة والتحكيم نحرص على تحديث معرفتنا بأحدث التطورات القانونية والتقنية لضمان تقديم خدمة أفضل لعملائنا.</p><p><Link to="/trusted-lawyer-number" go={go} className="text-link">تعرّف على معلومات التواصل مع محامٍ أردني موثوق <Arrow /></Link></p></div>
       </div></section>
       <section className="about-practices"><div className="container">
         <SectionHeader eyebrow="تخصصات الفريق" title="فريق قانوني متعدد الخبرات." intro="لدينا فريق من المحامين المتخصصين في العديد من المجالات القضائية، ويعمل كل تخصص ضمن رؤية قانونية متكاملة." />
@@ -1411,9 +1406,9 @@ function About({ go }: { go: (to: string) => void }) {
 function Services({ go }: { go: (to: string) => void }) {
   return (
     <>
-      <PageHero title="خدماتنا" intro="خمس ممارسات قانونية واضحة، تتعامل مع احتياجك دون تعقيد." visual="services" />
+      <PageHero title="خدماتنا" intro="خدمات قانونية للأفراد والشركات، من الاستشارة والوقاية إلى متابعة النزاعات والإجراءات." visual="services" />
       <section className="services-list"><div className="container">
-        {services.map((service, index) => <article key={service.slug}><div className="service-card-index"><span className="list-no">{String(index + 1).padStart(2, "0")}</span><Icon name={(["building", "work", "wallet", "shield", "document"] as IconName[])[index]} /></div><div><h2>{service.title}</h2><p>{service.description}</p></div><Link className="service-button" to={`/services/${service.slug}`} go={go}>اقرأ المزيد <Arrow /></Link></article>)}
+        {services.map((service, index) => <article className="service-list-card" data-service-index={index + 1} key={service.slug}><div className="service-card-index"><span className="list-no">{String(({ compensation: 5, insurance: 6, criminal: 7 } as Record<string, number>)[service.slug] ?? index + 1).padStart(2, "0")}</span><Icon name={(["building", "work", "wallet", "shield", "document"] as IconName[])[index % 5]} /></div><div><h2>{service.title}</h2><p>{service.description}</p></div><Link className="service-button" to={service.slug === "companies" ? "/company-lawyer-jordan" : service.slug === "labor" ? "/labor-lawyers-amman" : service.slug === "cybercrime" ? "/cyber-crime-lawyer-jordan" : service.slug === "rent-disputes" ? "/rent-disputes-jordan" : service.slug === "compensation" ? "/compensation-cases-jordan" : service.slug === "insurance" ? "/insurance-lawyer-jordan" : `/services/${service.slug}`} go={go}>عرض المزيد <Arrow /></Link></article>)}
       </div></section>
       <Consultation go={go} />
     </>
@@ -1441,13 +1436,26 @@ function LawyerProfile({ person, go }: { person: string; go: (to: string) => voi
     : { index: "02", name: "المحامية ليلى خالد أبو الرُب", role: "شريكة ومحامية", exp: "تمارس المهنة منذ عام 2015", areas: ["بكالوريوس القانون من جامعة اليرموك", "قوائم الشرف للعامين الدراسيين 2010/2011 و2011/2012", "القضايا العمالية: الأجور والفصل التعسفي ونهاية الخدمة والإجازات وعقود العمل", "التنفيذ والمطالبات المالية ومتابعة اللوائح والطلبات والجلسات والإجراءات الإلكترونية", "المعاملات أمام الوزارات والجهات الحكومية والتنسيق في القضايا متعددة التخصصات"], phone: "+962 78 234 3333", letter: "ل" };
   return (
     <>
-      <section className="profile-head"><div className="container">
+      <section className={`profile-head profile-head--${abdullah ? "abdullah" : "layla"}`}><div className="container">
         <Breadcrumb items={[["الرئيسية", "/"], ["من نحن", "/about"], [data.name, ""]]} go={go} />
         <div className="profile-grid"><div><h1>{data.name}</h1><p className="profile-role">{data.role}</p>
           <div className="profile-stats"><div><span>الخبرة</span><strong>{data.exp}</strong></div><div><span>الدور</span><strong>{data.role}</strong></div><div><span>رقم التلفون</span><strong dir="ltr">{data.phone}</strong></div><div><span>واتس</span><a className="profile-whatsapp" href={`https://wa.me/${data.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={15} />فتح واتساب</a></div></div>
         </div><div className={`profile-portrait ${abdullah ? "has-photo" : ""}`}>{abdullah ? <img src="/assets/abdullah.jpg" alt="المحامي عبدالله الزبيدي" /> : <span>{data.letter}</span>}</div></div>
       </div></section>
-      <section className="expertise"><div className="container narrow"><SectionHeader title="مجالات العمل" intro="خبرات عملية متخصصة تُدار ضمن منهج قانوني واضح." /><ol className="expertise-list">{data.areas.map((area, index) => <li key={area}><span>{String(index + 1).padStart(2, "0")}</span><h3>{area}</h3></li>)}</ol></div></section>
+      <section className={`profile-banner profile-banner--${abdullah ? "abdullah" : "layla"}`} aria-label="نبذة عن المسيرة المهنية">
+        <div className="container">
+          <div className="profile-banner-inner">
+            <span className="profile-banner-mark" aria-hidden="true">§</span>
+            <div className="profile-banner-copy">
+              <span className="profile-banner-kicker">{abdullah ? "مجالات العمل القانوني" : "المؤهلات والمسيرة المهنية"}</span>
+              <h2>{abdullah ? "رؤية قانونية تبدأ من فهم التفاصيل" : "مسيرة مهنية تجمع المعرفة والخبرة"}</h2>
+              <p>{abdullah ? "تعرّف على مجالات العمل والخدمات القانونية، وتواصل مباشرة للاستفسار." : "تعرّف على المؤهلات الأكاديمية والخبرة العملية ومجالات التخصص."}</p>
+            </div>
+            <span className="profile-banner-index" aria-hidden="true">{data.index}</span>
+          </div>
+        </div>
+      </section>
+      <section className={`expertise profile-expertise profile-expertise--${abdullah ? "abdullah" : "layla"}`}><div className="container narrow"><SectionHeader eyebrow={abdullah ? "التخصص القانوني" : "المؤهلات والمسيرة"} title={abdullah ? "مجالات العمل" : "المؤهلات والخبرة العملية"} intro={abdullah ? "مجالات قانونية يعمل عليها المحامي ضمن منهج واضح ومتابعة دقيقة." : "المؤهلات الأكاديمية والخبرة العملية، مرتبة في أقسام واضحة وسهلة القراءة."} /><ol className="profile-expertise-grid">{data.areas.map((area, index) => <li className={`profile-expertise-card ${!abdullah && index < 2 ? "profile-expertise-card--education" : "profile-expertise-card--practice"}`} data-profile-index={index + 1} key={area}><span className="profile-expertise-number">{String(index + 1).padStart(2, "0")}</span><div className="profile-expertise-copy">{!abdullah && <small className="profile-expertise-category">{index === 0 ? "المؤهل الأكاديمي" : index === 1 ? "التميز الأكاديمي" : "مجال الخبرة"}</small>}<h3>{area}</h3></div></li>)}</ol></div></section>
       <Consultation go={go} />
     </>
   );
@@ -1577,7 +1585,7 @@ function PublishedDetail({ id, type, go }: { id: string; type: "blog" | "law"; g
     <Breadcrumb items={[["الرئيسية", "/"], [parentLabel, parentPath], [item.title, ""]]} go={go} />
     <h1>{item.title}</h1><time>{formatDate(item.date)}</time><div className="detail-rule"></div>
     {item.images.length > 0 && <div className="published-gallery">{item.images.map((image, index) => <img key={`${item.id}-${index}`} src={image} alt={`${item.title} — صورة ${index + 1}`} />)}</div>}
-    <article className="published-copy">{item.content}</article>
+    <article className="published-copy" dangerouslySetInnerHTML={{ __html: sanitizeRichTextHtml(item.content) }} />
     <ShareControls /><Link to={parentPath} go={go} className="back-link"><Arrow /> العودة إلى {parentLabel}</Link>
   </div></section>;
 }
@@ -1620,7 +1628,7 @@ function Contact({ go }: { go: (to: string) => void }) {
         </div>
         <div className="location"><div className="map-frame"><span>LOCATION / AMMAN</span><iframe title="موقع شركة بيت الترافع في عمّان" src="https://www.google.com/maps?q=Jerusalem%20Commercial%20Complex%2C%20Khalda%2C%20Amman%2C%20Jordan&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe></div><p>عمّان، خلدا، شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102</p><a href="https://maps.app.goo.gl/DdQr9daSYcbFSg5M7?g_st=ac" target="_blank" rel="noreferrer">فتح الموقع <Arrow /></a></div>
       </div></section>
-      <section className="contact-final"><div className="container"><h2>جاهز لاتخاذ الخطوة الصحيحة؟</h2><Button to="/contact" go={go}>احجز استشارة</Button></div></section>
+      <section className="contact-final"><div className="container"><h2>جاهز لاتخاذ الخطوة الصحيحة؟</h2><Button to="/contact" go={go}>احجز استشارة</Button><p className="contact-related-links"><Link to="/jordanian-lawyer-number" go={go}>رقم محامي أردني</Link><span aria-hidden="true"> · </span><Link to="/jordanian-lawyers-numbers" go={go}>أرقام محامين أردنيين</Link></p></div></section>
     </>
   );
 }
@@ -1660,11 +1668,75 @@ function compressImage(file: File) {
   });
 }
 
+
+function RichTextEditor({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const savedSelection = useRef<Range | null>(null);
+  useEffect(() => { if (editorRef.current && editorRef.current.innerHTML !== value) editorRef.current.innerHTML = value; }, [value]);
+  const rememberSelection = () => {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0 && editorRef.current?.contains(selection.anchorNode)) savedSelection.current = selection.getRangeAt(0).cloneRange();
+  };
+  const restoreSelection = () => {
+    const selection = window.getSelection();
+    if (selection && savedSelection.current) { selection.removeAllRanges(); selection.addRange(savedSelection.current); }
+    editorRef.current?.focus();
+  };
+  const command = (name: string, argument?: string) => {
+    restoreSelection(); document.execCommand(name, false, argument);
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
+    rememberSelection();
+  };
+  const button = (label: string, title: string, action: () => void) => <button type="button" className="rich-toolbar-button" aria-label={title} title={title} onMouseDown={(event) => event.preventDefault()} onClick={action}>{label}</button>;
+  return <div className="rich-editor" dir="rtl">
+    <div className="rich-toolbar" role="toolbar" aria-label="أدوات تنسيق المحتوى">
+      <label className="rich-toolbar-select" title="نوع الخط"><span>الخط</span><select defaultValue="Arial" onMouseDown={rememberSelection} onChange={(event) => command("fontName", event.target.value)}><option value="Arial">Arial</option><option value="Tahoma">Tahoma</option><option value="Georgia">Georgia</option><option value="Times New Roman">Times New Roman</option><option value="Verdana">Verdana</option></select></label>
+      <label className="rich-toolbar-select" title="حجم الخط"><span>الحجم</span><select defaultValue="3" onMouseDown={rememberSelection} onChange={(event) => command("fontSize", event.target.value)}><option value="2">صغير</option><option value="3">عادي</option><option value="4">كبير</option><option value="5">أكبر</option><option value="6">كبير جدًا</option></select></label>
+      
+      {button("B", "عريض", () => command("bold"))}{button("I", "مائل", () => command("italic"))}{button("U", "تحته خط", () => command("underline"))}{button("S", "يتوسطه خط", () => command("strikeThrough"))}
+      <label className="rich-color" title="لون النص"><span>A</span><input aria-label="لون النص" type="color" defaultValue="#34312e" onMouseDown={rememberSelection} onChange={(event) => command("foreColor", event.target.value)} /></label>
+      <label className="rich-color rich-highlight" title="لون خلفية النص"><span>▰</span><input aria-label="لون خلفية النص" type="color" defaultValue="#fff0a8" onMouseDown={rememberSelection} onChange={(event) => command("hiliteColor", event.target.value)} /></label>
+      <label className="rich-toolbar-select" title="تنسيق الفقرة"><span>العناوين</span><select defaultValue="P" onMouseDown={rememberSelection} onChange={(event) => command("formatBlock", event.target.value)}><option value="P">فقرة</option><option value="H1">عنوان رئيسي</option><option value="H2">عنوان فرعي</option><option value="H3">عنوان صغير</option><option value="BLOCKQUOTE">اقتباس</option></select></label>
+      {button("يمين", "محاذاة لليمين", () => command("justifyRight"))}{button("وسط", "محاذاة للوسط", () => command("justifyCenter"))}{button("يسار", "محاذاة لليسار", () => command("justifyLeft"))}
+      {button("• قائمة", "قائمة نقطية", () => command("insertUnorderedList"))}{button("1. قائمة", "قائمة مرقمة", () => command("insertOrderedList"))}
+      {button("رابط", "إضافة رابط", () => { const url = window.prompt("أدخل الرابط"); if (url) command("createLink", url); })}
+      {button("↶", "تراجع", () => command("undo"))}{button("↷", "إعادة", () => command("redo"))}{button("مسح التنسيق", "إزالة التنسيق عن النص المحدد", () => command("removeFormat"))}
+    </div>
+    <div ref={editorRef} className="rich-editor-surface" contentEditable suppressContentEditableWarning role="textbox" aria-label="محتوى المقال أو القانون" aria-multiline="true" data-placeholder="اكتب المقال أو نص القانون هنا، وحدد أي جزء لتنسيقه..." onInput={(event) => onChange(event.currentTarget.innerHTML)} onKeyUp={rememberSelection} onMouseUp={rememberSelection} />
+    <div className="rich-editor-footer"><span>يدعم العربية والإنجليزية والتنسيق داخل النص</span><span>{value.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").trim().length} حرفًا تقريبًا</span></div>
+  </div>;
+}
+
+function sanitizeRichTextHtml(html: string) {
+  const parsed = new DOMParser().parseFromString(html, "text/html");
+  const allowedTags = new Set(["P", "DIV", "BR", "STRONG", "B", "EM", "I", "U", "S", "H1", "H2", "H3", "H4", "UL", "OL", "LI", "BLOCKQUOTE", "A", "SPAN", "FONT"]);
+  const allowedStyles = new Set(["color", "background-color", "font-size", "font-family", "text-align", "direction"]);
+  const clean = (node: Node) => Array.from(node.childNodes).forEach((child) => {
+    if (child.nodeType === Node.ELEMENT_NODE) {
+      const element = child as HTMLElement;
+      if (!allowedTags.has(element.tagName)) { element.replaceWith(...Array.from(element.childNodes)); return; }
+      Array.from(element.attributes).forEach((attribute) => {
+        if (attribute.name === "style") {
+          const safe = Array.from(element.style).filter((property) => allowedStyles.has(property)).map((property) => `${property}: ${element.style.getPropertyValue(property)}`).join("; ");
+          if (safe) element.setAttribute("style", safe); else element.removeAttribute("style");
+        } else if (element.tagName === "A" && attribute.name === "href") {
+          if (!/^(https?:|mailto:|tel:)/i.test(attribute.value)) element.removeAttribute("href");
+        } else if (!(element.tagName === "A" && ["target", "rel"].includes(attribute.name))) element.removeAttribute(attribute.name);
+      });
+      if (element.tagName === "A" && element.hasAttribute("href")) { element.setAttribute("rel", "noopener noreferrer"); element.setAttribute("target", "_blank"); }
+      clean(element);
+    } else if (child.nodeType !== Node.TEXT_NODE) child.remove();
+  });
+  clean(parsed.body);
+  return parsed.body.innerHTML;
+}
+
 function Admin({ go }: { go: (to: string) => void }) {
   const [type, setType] = useState<"blog" | "law">("blog");
   const [toast, setToast] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [images, setImages] = useState<string[]>([]);
   const [items, setItems] = useState<PublishedContent[]>([]);
   const [processingImages, setProcessingImages] = useState(false);
@@ -1690,18 +1762,17 @@ function Admin({ go }: { go: (to: string) => void }) {
     event.preventDefault();
     setPublishing(true);
     try {
-      const nextItem = await createPublishedContent({
-        type,
-        title: title.trim(),
-        content: content.trim(),
-        date: new Date().toISOString().slice(0, 10),
-        images,
-      });
-      setItems((current) => [nextItem, ...current]);
-      setTitle("");
-      setContent("");
-      setImages([]);
-      setToast(type === "blog" ? "تم نشر المقال في المدونة" : "تم نشر القانون في صفحة القوانين");
+      const draft = { type, title: title.trim(), content: content.trim(), date: editingId ? (items.find((item) => item.id === editingId)?.date || new Date().toISOString().slice(0, 10)) : new Date().toISOString().slice(0, 10), images } as const;
+      if (editingId) {
+        const updated = await updatePublishedContent(editingId, draft);
+        setItems((current) => current.map((item) => item.id === editingId ? updated : item));
+        setToast("تم حفظ تعديلات المحتوى");
+      } else {
+        const nextItem = await createPublishedContent(draft);
+        setItems((current) => [nextItem, ...current]);
+        setToast(type === "blog" ? "تم نشر المقال في المدونة" : "تم نشر القانون في صفحة القوانين");
+      }
+      setTitle(""); setContent(""); setImages([]); setEditingId(null);
     } catch {
       setToast("تعذر النشر. تحقق من اتصال الباك إند وحاول مجددًا.");
     } finally {
@@ -1718,6 +1789,8 @@ function Admin({ go }: { go: (to: string) => void }) {
       window.setTimeout(() => setToast(""), 3000);
     }
   };
+  const editItem = (item: PublishedContent) => { setEditingId(item.id); setType(item.type); setTitle(item.title); setContent(item.content); setImages(item.images || []); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const cancelEdit = () => { setEditingId(null); setTitle(""); setContent(""); setImages([]); };
   const shareItem = async (item: PublishedContent) => {
     const path = item.type === "blog" ? `/blog/published/${item.id}` : `/laws/published/${item.id}`;
     const url = new URL(path, window.location.origin).toString();
@@ -1736,19 +1809,19 @@ function Admin({ go }: { go: (to: string) => void }) {
     <main className="admin-main"><header><div><span>مساحة الإدارة</span><h1>إنشاء محتوى</h1><p>أنشئ مقالًا أو قانونًا، أضف الصور ثم انشره مباشرة في القسم المختار.</p></div><Link to="/" go={go} className="admin-return">العودة للموقع <Arrow /></Link></header>
       <div className="admin-dashboard">
         <form className="admin-editor" onSubmit={publish}>
-          <div className="admin-editor-heading"><div className="admin-step">01</div><div><h2>محتوى جديد</h2><p>حدد القسم واكتب المحتوى الذي تريد نشره.</p></div></div>
+          <div className="admin-editor-heading"><div className="admin-step">{editingId ? "02" : "01"}</div><div><h2>{editingId ? "تعديل المحتوى" : "محتوى جديد"}</h2><p>حدد القسم واكتب المحتوى الذي تريد نشره.</p></div></div>
           <fieldset className="content-type"><legend>مكان النشر</legend><button type="button" className={type === "blog" ? "selected" : ""} onClick={() => setType("blog")}><Icon name="document" size={21} /><span><b>المدونة</b><small>مقال أو خبر قانوني</small></span></button><button type="button" className={type === "law" ? "selected" : ""} onClick={() => setType("law")}><Icon name="building" size={21} /><span><b>القوانين</b><small>قانون أو مرجع تشريعي</small></span></button></fieldset>
           <Input label="عنوان المحتوى" value={title} onChange={setTitle} />
-          <label className="input admin-content-field"><span>المحتوى</span><textarea required value={content} onChange={(event) => setContent(event.target.value)} placeholder="اكتب المقال أو القانون هنا..." /></label>
+          <label className="input admin-content-field"><span>المحتوى</span></label><RichTextEditor key={editingId || "new-content"} value={content} onChange={setContent} />
           <label className="admin-upload"><input type="file" accept="image/*" multiple onChange={handleImages} /><span className="admin-upload-icon">+</span><strong>{processingImages ? "جاري تجهيز الصور..." : "أضف صورًا للمحتوى"}</strong><small>يمكن اختيار عدة صور وإضافة المزيد لاحقًا</small></label>
           {images.length > 0 && <div className="admin-image-preview">{images.map((image, index) => <div key={`${image.slice(-20)}-${index}`}><img src={image} alt={`معاينة ${index + 1}`} /><button type="button" aria-label={`حذف الصورة ${index + 1}`} onClick={() => setImages((current) => current.filter((_, imageIndex) => imageIndex !== index))}>×</button></div>)}</div>}
-          <button className="button admin-publish" type="submit" disabled={processingImages || publishing}>{publishing ? "جاري النشر..." : `نشر في ${type === "blog" ? "المدونة" : "القوانين"}`} {!publishing && <Arrow />}</button>
+          <div className="admin-form-actions"><button className="button admin-publish" type="submit" disabled={processingImages || publishing}>{publishing ? "جاري الحفظ..." : editingId ? "حفظ التعديلات" : `نشر في ${type === "blog" ? "المدونة" : "القوانين"}`} {!publishing && <Arrow />}</button>{editingId && <button className="admin-cancel-edit" type="button" onClick={cancelEdit}>إلغاء التعديل</button>}</div>
         </form>
         <section className="admin-library">
           <div className="admin-library-heading"><span>{String(items.length).padStart(2, "0")}</span><div><h2>المحتوى المنشور</h2><p>إدارة المقالات والقوانين التي تمت إضافتها.</p></div></div>
           {items.length === 0 ? <div className="admin-empty"><Icon name="document" size={30} /><p>لا يوجد محتوى منشور بعد.</p></div> : <div className="admin-content-table"><div className="admin-table-head"><span>النوع</span><span>العنوان</span><span>التاريخ</span><span>الإجراءات</span></div>{items.map((item) => {
             const path = item.type === "blog" ? `/blog/published/${item.id}` : `/laws/published/${item.id}`;
-            return <article key={item.id}><span className={`content-badge ${item.type}`}>{item.type === "blog" ? "مدونة" : "قانون"}</span><h3>{item.title}</h3><time>{formatDate(item.date)}</time><div><Link to={path} go={go}>عرض</Link><button type="button" onClick={() => shareItem(item)}><Icon name="share" size={14} />مشاركة</button><button className="danger" type="button" onClick={() => removeItem(item.id)}>حذف</button></div></article>;
+            return <article key={item.id}><span className={`content-badge ${item.type}`}>{item.type === "blog" ? "مدونة" : "قانون"}</span><h3>{item.title}</h3><time>{formatDate(item.date)}</time><div><Link to={path} go={go}>عرض</Link><button type="button" onClick={() => editItem(item)}>تعديل</button><button type="button" onClick={() => shareItem(item)}><Icon name="share" size={14} />مشاركة</button><button className="danger" type="button" onClick={() => removeItem(item.id)}>حذف</button></div></article>;
           })}</div>}
         </section>
       </div>
@@ -1758,7 +1831,7 @@ function Admin({ go }: { go: (to: string) => void }) {
 }
 
 function Footer({ go }: { go: (to: string) => void }) {
-  return <footer><div className="container footer-grid"><div className="footer-brand"><img src="/assets/logo-dark.png" alt="بيت الترافع لأعمال المحاماة والتحكيم" /><p>شركة بيت الترافع لأعمال المحاماة والتحكيم</p><span className="footer-location"><Icon name="pin" size={17} />عمّان، خلدا، شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102</span></div><div><strong>روابط</strong>{nav.slice(0, 5).map(([to, label]) => <Link key={to} to={to} go={go}>{label}</Link>)}</div><div><strong>تواصل</strong><a className="footer-phone" dir="ltr" href="tel:+962798080228"><Icon name="phone" size={16} />+962 79 808 0228</a><a className="footer-phone" dir="ltr" href="tel:+962782343333"><Icon name="phone" size={16} />+962 78 234 3333</a><a dir="ltr" href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a><Button to="/contact" go={go}>احجز استشارة</Button></div></div><div className="footer-bottom container"><span>© {new Date().getFullYear()} بيت الترافع</span><Link to="/login" go={go}>دخول الإدارة</Link><span>AMMAN / JORDAN</span></div></footer>;
+  return <footer><div className="container footer-grid"><div className="footer-brand"><img src="/assets/logo-dark.png" alt="بيت الترافع لأعمال المحاماة والتحكيم" /><p>شركة بيت الترافع لأعمال المحاماة والتحكيم</p><span className="footer-location"><Icon name="pin" size={17} />عمّان، خلدا، شارع الأميرة رحمة بنت الحسن، مجمع القدس التجاري، الطابق الأول، مكتب 102</span></div><div><strong>روابط</strong>{nav.slice(0, 5).map(([to, label]) => <Link key={to} to={to} go={go}>{label}</Link>)}<strong className="footer-subheading">الدليل القانوني</strong><Link to="/jordanian-lawyers-numbers" go={go}>أرقام محامين أردنيين</Link><Link to="/jordanian-lawyer-number" go={go}>رقم محامي أردني</Link><Link to="/trusted-lawyer-number" go={go}>رقم محامي أردني موثوق</Link></div><div><strong>تواصل</strong><a className="footer-phone" dir="ltr" href="tel:+962798080228"><Icon name="phone" size={16} />+962 79 808 0228</a><a className="footer-phone" dir="ltr" href="tel:+962782343333"><Icon name="phone" size={16} />+962 78 234 3333</a><a dir="ltr" href="mailto:lawyerabdullah960@gmail.com">lawyerabdullah960@gmail.com</a><Button to="/contact" go={go}>احجز استشارة</Button></div></div><div className="footer-bottom container"><span>© {new Date().getFullYear()} بيت الترافع</span><Link to="/login" go={go}>دخول الإدارة</Link><span>AMMAN / JORDAN</span></div></footer>;
 }
 
 function WhatsAppFloat() {
