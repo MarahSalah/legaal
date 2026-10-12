@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, ReactNode, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { createPublishedContent, deletePublishedContent, getPublishedContent, listPublishedContent, type PublishedContent } from "./contentApi";
 
 type Service = { slug: string; title: string; description: string };
@@ -1577,7 +1577,7 @@ function PublishedDetail({ id, type, go }: { id: string; type: "blog" | "law"; g
     <Breadcrumb items={[["الرئيسية", "/"], [parentLabel, parentPath], [item.title, ""]]} go={go} />
     <h1>{item.title}</h1><time>{formatDate(item.date)}</time><div className="detail-rule"></div>
     {item.images.length > 0 && <div className="published-gallery">{item.images.map((image, index) => <img key={`${item.id}-${index}`} src={image} alt={`${item.title} — صورة ${index + 1}`} />)}</div>}
-    <article className="published-copy">{item.content}</article>
+    <article className="published-copy">{/<(?:p|h[1-6]|ul|ol|li|strong|em|span|div|a|blockquote|br|table)\\b/i.test(item.content) ? <div dangerouslySetInnerHTML={{ __html: item.content }} /> : item.content}</article>
     <ShareControls /><Link to={parentPath} go={go} className="back-link"><Arrow /> العودة إلى {parentLabel}</Link>
   </div></section>;
 }
@@ -1660,6 +1660,63 @@ function compressImage(file: File) {
   });
 }
 
+function RichTextEditor({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const runCommand = (command: string, commandValue?: string) => {
+    editorRef.current?.focus();
+    document.execCommand(command, false, commandValue);
+    if (editorRef.current) onChange(editorRef.current.innerHTML);
+  };
+  const keepEditorFocus = (event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault();
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== value) editorRef.current.innerHTML = value;
+  }, [value]);
+  const addLink = () => {
+    const url = window.prompt("أدخل رابط الصفحة");
+    if (url && /^(https?:|mailto:|tel:)/i.test(url)) runCommand("createLink", url);
+  };
+  return (
+    <div className="rich-editor" dir="rtl">
+      <div className="rich-toolbar" role="toolbar" aria-label="تنسيق المحتوى">
+        <label className="rich-tool-select" aria-label="نوع الخط">
+          <span>الخط</span>
+          <select defaultValue="Alexandria" onChange={(event) => runCommand("fontName", event.target.value)}>
+            <option value="Alexandria">Alexandria</option><option value="Almarai">Almarai</option><option value="Arial">Arial</option><option value="Georgia">Georgia</option><option value="Tahoma">Tahoma</option><option value="Times New Roman">Times New Roman</option>
+          </select>
+        </label>
+        <label className="rich-tool-select" aria-label="حجم الخط">
+          <span>الحجم</span>
+          <select defaultValue="3" onChange={(event) => runCommand("fontSize", event.target.value)}>
+            <option value="2">صغير</option><option value="3">عادي</option><option value="4">كبير</option><option value="5">كبير جدًا</option><option value="6">عنوان</option>
+          </select>
+        </label>
+        <label className="rich-color" title="لون الخط"><span>لون الخط</span><input type="color" defaultValue="#26352f" onChange={(event) => runCommand("foreColor", event.target.value)} /></label>
+        <label className="rich-color" title="لون التمييز"><span>تمييز</span><input type="color" defaultValue="#f1dfad" onChange={(event) => runCommand("hiliteColor", event.target.value)} /></label>
+        <span className="rich-toolbar-divider" />
+        <button type="button" title="عريض" aria-label="عريض" onMouseDown={keepEditorFocus} onClick={() => runCommand("bold")}><b>B</b></button>
+        <button type="button" title="مائل" aria-label="مائل" onMouseDown={keepEditorFocus} onClick={() => runCommand("italic")}><i>I</i></button>
+        <button type="button" title="تسطير" aria-label="تسطير" onMouseDown={keepEditorFocus} onClick={() => runCommand("underline")}><u>U</u></button>
+        <button type="button" title="يتوسطه خط" aria-label="يتوسطه خط" onMouseDown={keepEditorFocus} onClick={() => runCommand("strikeThrough")}><s>S</s></button>
+        <span className="rich-toolbar-divider" />
+        <label className="rich-tool-select rich-format-select" aria-label="تنسيق الفقرة">
+          <span>تنسيق</span>
+          <select defaultValue="p" onChange={(event) => runCommand("formatBlock", event.target.value)}>
+            <option value="p">فقرة</option><option value="h2">عنوان رئيسي</option><option value="h3">عنوان فرعي</option><option value="h4">عنوان صغير</option><option value="blockquote">اقتباس</option>
+          </select>
+        </label>
+        <button type="button" title="قائمة نقطية" aria-label="قائمة نقطية" onMouseDown={keepEditorFocus} onClick={() => runCommand("insertUnorderedList")}><span>• قائمة</span></button>
+        <button type="button" title="قائمة مرقمة" aria-label="قائمة مرقمة" onMouseDown={keepEditorFocus} onClick={() => runCommand("insertOrderedList")}><span>١. قائمة</span></button>
+        <button type="button" title="محاذاة لليمين" aria-label="محاذاة لليمين" onMouseDown={keepEditorFocus} onClick={() => runCommand("justifyRight")}>⇥</button>
+        <button type="button" title="توسيط" aria-label="توسيط" onMouseDown={keepEditorFocus} onClick={() => runCommand("justifyCenter")}>☰</button>
+        <button type="button" title="إضافة رابط" aria-label="إضافة رابط" onMouseDown={keepEditorFocus} onClick={addLink}>↗</button>
+        <button type="button" title="إزالة التنسيق" aria-label="إزالة التنسيق" onMouseDown={keepEditorFocus} onClick={() => runCommand("removeFormat")}>Tx</button>
+      </div>
+      <div ref={editorRef} className="rich-editor-canvas" contentEditable suppressContentEditableWarning role="textbox" aria-label="محتوى المقال أو القانون" aria-multiline="true" data-placeholder="ابدأ بكتابة المحتوى هنا، وحدد النص لتنسيقه..." onInput={(event) => onChange(event.currentTarget.innerHTML)} />
+      <div className="rich-editor-footer"><span>محرر المحتوى</span><span>يمكنك تحديد النص ثم اختيار التنسيق المناسب</span></div>
+    </div>
+  );
+}
+
 function Admin({ go }: { go: (to: string) => void }) {
   const [type, setType] = useState<"blog" | "law">("blog");
   const [toast, setToast] = useState("");
@@ -1739,7 +1796,7 @@ function Admin({ go }: { go: (to: string) => void }) {
           <div className="admin-editor-heading"><div className="admin-step">01</div><div><h2>محتوى جديد</h2><p>حدد القسم واكتب المحتوى الذي تريد نشره.</p></div></div>
           <fieldset className="content-type"><legend>مكان النشر</legend><button type="button" className={type === "blog" ? "selected" : ""} onClick={() => setType("blog")}><Icon name="document" size={21} /><span><b>المدونة</b><small>مقال أو خبر قانوني</small></span></button><button type="button" className={type === "law" ? "selected" : ""} onClick={() => setType("law")}><Icon name="building" size={21} /><span><b>القوانين</b><small>قانون أو مرجع تشريعي</small></span></button></fieldset>
           <Input label="عنوان المحتوى" value={title} onChange={setTitle} />
-          <label className="input admin-content-field"><span>المحتوى</span><textarea required value={content} onChange={(event) => setContent(event.target.value)} placeholder="اكتب المقال أو القانون هنا..." /></label>
+          <div className="input admin-content-field"><span>المحتوى</span><RichTextEditor value={content} onChange={setContent} /></div>
           <label className="admin-upload"><input type="file" accept="image/*" multiple onChange={handleImages} /><span className="admin-upload-icon">+</span><strong>{processingImages ? "جاري تجهيز الصور..." : "أضف صورًا للمحتوى"}</strong><small>يمكن اختيار عدة صور وإضافة المزيد لاحقًا</small></label>
           {images.length > 0 && <div className="admin-image-preview">{images.map((image, index) => <div key={`${image.slice(-20)}-${index}`}><img src={image} alt={`معاينة ${index + 1}`} /><button type="button" aria-label={`حذف الصورة ${index + 1}`} onClick={() => setImages((current) => current.filter((_, imageIndex) => imageIndex !== index))}>×</button></div>)}</div>}
           <button className="button admin-publish" type="submit" disabled={processingImages || publishing}>{publishing ? "جاري النشر..." : `نشر في ${type === "blog" ? "المدونة" : "القوانين"}`} {!publishing && <Arrow />}</button>
