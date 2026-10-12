@@ -238,6 +238,55 @@ function Consultation({ go }: { go: (to: string) => void }) {
   );
 }
 
+
+function MediaInterview() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || shouldLoadVideo) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShouldLoadVideo(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "100px 0px", threshold: 0.1 });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [shouldLoadVideo]);
+
+  return (
+    <section className="media-interview" ref={sectionRef} aria-labelledby="media-interview-title">
+      <div className="container media-interview-grid">
+        <div className="media-interview-copy">
+          <p className="eyebrow">حضور إعلامي</p>
+          <h2 id="media-interview-title">بيت الترافع في الإعلام</h2>
+          <p>شاهدوا مقابلة المحامي عبر قناة رؤيا، مباشرة من موقع بيت الترافع.</p>
+          <span className="media-interview-source">قناة رؤيا · YouTube</span>
+        </div>
+        <div className="media-interview-frame">
+          {shouldLoadVideo ? (
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/-Vx30ayyI8o?autoplay=1&mute=1&controls=1&rel=0&playsinline=1"
+              title="مقابلة المحامي على قناة رؤيا"
+              loading="eager"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          ) : (
+            <div className="media-interview-placeholder" aria-label="سيتم تحميل فيديو المقابلة عند الوصول إلى هذا القسم">
+              <span aria-hidden="true">▶</span>
+              <p>مقابلة قناة رؤيا</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Home({ go }: { go: (to: string) => void }) {
   return (
     <>
@@ -258,6 +307,7 @@ function Home({ go }: { go: (to: string) => void }) {
         </div>
       </section>
       <section className="home-editorial"><div className="container"><div className="home-editorial-image"><img src="/assets/contracts.jpg" alt="مراجعة وثائق قانونية" /></div><div><SectionHeader eyebrow="عن ممارستنا" title="معرفة قانونية تواكب المستجدات." /><p>نعمل على مراجعة المستندات وتوضيح الخيارات القانونية ومتابعة الإجراءات ذات الصلة، مع مراعاة خصوصية كل ملف واحتياجات العميل.</p><Button to="/about" go={go}>تعرف علينا</Button></div></div></section>
+      <MediaInterview />
       <Consultation go={go} />
     </>
   );
