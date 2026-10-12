@@ -3039,7 +3039,7 @@ section.profile-expertise .profile-expertise-copy h3 {
 
 /* Mobile hero: keep the content and revealed photograph visible from the first frame.
    Preserve the original document and gavel animation timing on desktop and tablet. */
-@media (max-width: 800px) {
+@media (max-width: 520px) {
   .hero-content {
     opacity: 1;
     animation: none;
